@@ -21,6 +21,10 @@ I followed the coil design and wrapping guides for the TGSL linked above, though
 
 ![wrapping jig](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/coil%20winding.jpg)
 
+After wrapping, the coils were stiffened with dental floss knots and some waterlox wood finish.  They were then shielded by wrapping sparsely with bare copper wire then coated with a mixture of polyurethane and graphite powder.  Finally, the coils were wrapped in electrical tape to insulate.  
+
 After determining the correct amount of overlap to cancel out the transmit signal on the receive coil, I designed and built a wooden case for the coils with dowel adjusters to keep the receive coil nulled while the epoxy cured (measured with an oscilloscope while transmitting a 15 kHz sine wave on the tx coil):
 
 ![coil case](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/coil%20case.jpg)
+
+I'm using a shielded USB cable to connect the coils to the control circuitry.  Then a smartphone app generates the transmit signal and receives the return signal using the 3.5 mm audio jack.  
