@@ -16,3 +16,11 @@ The first version of the schematic is available here:
 https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/lumber%20plunder%20metal%20detector%20schematic%20v1.pdf
 
 The android app is still in development, I'm learning as I go.  
+
+I followed the coil design and wrapping guides for the TGSL linked above, though using a thicker magnet wire I happened to have on hand (and using fewer wraps to reduce weight):
+
+![wrapping jig](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/coil%20winding.jpg)
+
+After determining the correct amount of overlap to cancel out the transmit signal on the receive coil, I designed and built a wooden case for the coils with dowel adjusters to keep the receive coil nulled while the epoxy cured (measured with an oscilloscope while transmitting a 15 kHz sine wave on the tx coil):
+
+![coil case](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/coil%20case.jpg)
