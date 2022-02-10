@@ -28,3 +28,5 @@ After determining the correct amount of overlap to cancel out the transmit signa
 ![coil case](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/coil%20case.jpg)
 
 I'm using a shielded USB cable to connect the coils to the control circuitry.  Then a smartphone app generates the transmit signal and receives the return signal using the 3.5 mm audio jack.  
+
+2022/2/10:  I found a problem with the schematic, I needed to put a 4.7k resistor from the microphone input to ground in order for my phone to detect it as a "headset" and change the audio input device from the internal mic to the cable/plug.  I'll update it soon.  
