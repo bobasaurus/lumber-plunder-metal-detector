@@ -109,10 +109,9 @@ public class DigitalLockInAmplifier  {
 
             double freqDev = fmDiscrim.FMDiscrimAllenFast(valueI, valueQ);
 
-            sampleCollectorFreqDev.AddSample(freqDev);
-
-            sampleCollectorPhase.AddSample(phaseDeg);
-            sampleCollectorMag.AddSample(mag);
+            if (sampleCollectorFreqDev != null) sampleCollectorFreqDev.AddSample(freqDev);
+            if (sampleCollectorPhase != null) sampleCollectorPhase.AddSample(phaseDeg);
+            if (sampleCollectorMag != null) sampleCollectorMag.AddSample(mag);
 
             //ProcessedDataAvailable?.Invoke(valueI, valueQ);
             //dataAvailableIQ.DLIA_DataAvailableCallback();

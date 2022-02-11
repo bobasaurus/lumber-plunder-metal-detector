@@ -6,42 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/amplitudePlot"
+            style="@style/APDefacto.Dark"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:domainTitle="time [ms]"
+            app:lineLabelRotationBottom="-45"
+            app:lineLabels="left|bottom"
+            app:rangeTitle="amplitude"
+            app:title="Amplitude vs Time"
+            app:renderMode="use_background_thread"/>
+
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/phasePlot"
+            style="@style/APDefacto.Dark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:domainTitle="time [ms]"
+            app:lineLabelRotationBottom="-45"
+            app:lineLabels="left|bottom"
+            app:rangeTitle="phase diff"
+            app:title="Phase Diff vs Time"
+            app:renderMode="use_background_thread"
+            />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/startStopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start / Stop" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Monday" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tuesday" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wednesday" />
-    </com.google.android.material.tabs.TabLayout>
-
-    <com.anychart.AnyChartView
-        android:id="@+id/fftChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:text="Start"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </com.anychart.AnyChartView>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
