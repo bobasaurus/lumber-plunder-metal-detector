@@ -254,8 +254,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        //redrawer.finish();
+    public void onResume() {
+        super.onResume();
+
+        amplitudeRedrawer.start();
+        phaseRedrawer.start();
     }
+
+    @Override
+    public void onPause() {
+        amplitudeRedrawer.pause();
+        phaseRedrawer.pause();
+
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        amplitudeRedrawer.finish();
+        phaseRedrawer.finish();
+
+        super.onDestroy();
+    }
+
 }
