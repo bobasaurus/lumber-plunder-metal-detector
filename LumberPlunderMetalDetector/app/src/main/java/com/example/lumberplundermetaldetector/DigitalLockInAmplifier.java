@@ -3,6 +3,8 @@ package com.example.lumberplundermetaldetector;
 
 //import be.tarsos.dsp.filters.LowPassFS;
 
+import org.apache.commons.math3.util.FastMath;
+
 public class DigitalLockInAmplifier  {
 
     private IDataAvailableIQ dataAvailableIQ;
@@ -92,7 +94,7 @@ public class DigitalLockInAmplifier  {
             valueQ = postDecimFilterQ.ProcessSample(valueQ);
 
             //TODO: use fast atan2
-            double phaseRad = Math.atan2(valueQ, valueI);//angle in radians
+            double phaseRad = FastMath.atan2(valueQ, valueI);//angle in radians
             double phaseDeg = 180.0 / Math.PI * phaseRad;
             //var phaseDegNormalized = phaseDeg;
             //while (phaseDegNormalized < 0) phaseDegNormalized += 360;

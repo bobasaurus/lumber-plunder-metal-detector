@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import com.androidplot.Plot;
 import com.androidplot.PlotListener;
 import com.androidplot.xy.AdvancedLineAndPointRenderer;
+import com.androidplot.xy.FastLineAndPointRenderer;
 import com.androidplot.xy.XYSeries;
 
 import java.lang.ref.WeakReference;
@@ -22,9 +23,9 @@ public class RollingXYSeries implements XYSeries, PlotListener {
 
     //not really sure what this does
     //private AdvancedLineAndPointRenderer renderer;
-    private WeakReference<AdvancedLineAndPointRenderer> rendererRef;
+    private WeakReference<FastLineAndPointRenderer> rendererRef;
 
-    RollingXYSeries(int maxCapacity, final WeakReference<AdvancedLineAndPointRenderer> renderer) {
+    RollingXYSeries(int maxCapacity, final WeakReference<FastLineAndPointRenderer> renderer) {
         this.rendererRef = renderer;
         this.maxCapacity = maxCapacity;
         data = new ArrayList<>();
@@ -38,8 +39,8 @@ public class RollingXYSeries implements XYSeries, PlotListener {
                     data.add(yValue);
                     while (data.size() > maxCapacity) data.remove(0);
 
-                    if (rendererRef.get() != null)
-                        rendererRef.get().setLatestIndex(data.size() - 1);
+                    //if (rendererRef.get() != null)
+                        //rendererRef.get().setLatestIndex(data.size() - 1);
                 } finally {
                     lock.writeLock().unlock();
                 }
@@ -77,6 +78,6 @@ public class RollingXYSeries implements XYSeries, PlotListener {
 
     @Override
     public String getTitle() {
-        return "blah expanding";
+        return "";
     }
 }

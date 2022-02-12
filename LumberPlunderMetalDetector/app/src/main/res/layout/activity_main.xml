@@ -17,22 +17,23 @@
             style="@style/APDefacto.Dark"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            app:domainTitle="time [ms]"
+            app:domainTitle="points"
             app:lineLabelRotationBottom="-45"
             app:lineLabels="left|bottom"
             app:rangeTitle="amplitude"
             app:title="Amplitude vs Time"
-            app:renderMode="use_background_thread"/>
+            app:renderMode="use_background_thread"
+            />
 
         <com.androidplot.xy.XYPlot
             android:id="@+id/phasePlot"
             style="@style/APDefacto.Dark"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:domainTitle="time [ms]"
+            app:domainTitle="points"
             app:lineLabelRotationBottom="-45"
             app:lineLabels="left|bottom"
-            app:rangeTitle="phase diff"
+            app:rangeTitle="phase diff [deg]"
             app:title="Phase Diff vs Time"
             app:renderMode="use_background_thread"
             />

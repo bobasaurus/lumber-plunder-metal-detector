@@ -18,8 +18,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.androidplot.Plot;
 import com.androidplot.xy.*;
 import com.androidplot.util.Redrawer;
+
+import org.apache.commons.math3.util.FastMath;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -75,13 +78,16 @@ public class MainActivity extends AppCompatActivity {
                 int numPoints = 4000;
 
                 amplitudePlot = findViewById(R.id.amplitudePlot);
-                amplitudeSeries = new RollingXYSeries(numPoints, new WeakReference<>(amplitudePlot.getRenderer(AdvancedLineAndPointRenderer.class)));
-                LineAndPointFormatter series1Format =
-                        new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels);
+                amplitudeSeries = new RollingXYSeries(numPoints, new WeakReference<>(amplitudePlot.getRenderer(FastLineAndPointRenderer.class)));
+
+                FastLineAndPointRenderer.Formatter series1Format = new FastLineAndPointRenderer.Formatter(Color.GREEN, Color.GREEN, null);
+                //LineAndPointFormatter series1Format =
+                //        new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels);
                 series1Format.setPointLabeler(null);
                 series1Format.setVertexPaint(null);
                 amplitudePlot.addSeries(amplitudeSeries, series1Format);
                 amplitudePlot.setDomainBoundaries(0, numPoints, BoundaryMode.FIXED);
+                amplitudePlot.getLegend().setVisible(false);
 
                 //NOTE: doesn't seem to be necessary to explicitly call this, oddly
                 //Add the draw start/finish listener, which is the custom series I made.
@@ -97,14 +103,16 @@ public class MainActivity extends AppCompatActivity {
                 int numPoints = 4000;
 
                 phasePlot = findViewById(R.id.phasePlot);
-                phaseSeries = new RollingXYSeries(numPoints, new WeakReference<>(phasePlot.getRenderer(AdvancedLineAndPointRenderer.class)));
+                phaseSeries = new RollingXYSeries(numPoints, new WeakReference<>(phasePlot.getRenderer(FastLineAndPointRenderer.class)));
                 //LineAndPointFormatter series1Format = new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels_2);
-                LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.RED, Color.RED, null, null);
+                FastLineAndPointRenderer.Formatter series1Format = new FastLineAndPointRenderer.Formatter(Color.RED, Color.RED, null);
+
                 series1Format.setPointLabeler(null);
                 series1Format.setVertexPaint(null);
                 series1Format.setInterpolationParams(null);
                 phasePlot.addSeries(phaseSeries, series1Format);
                 phasePlot.setDomainBoundaries(0, numPoints, BoundaryMode.FIXED);
+                phasePlot.getLegend().setVisible(false);
 
                 //NOTE: doesn't seem to be necessary to explicitly call this, oddly
                 //Add the draw start/finish listener, which is the custom series I made.
