@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -25,6 +26,10 @@ import com.androidplot.util.Redrawer;
 import org.apache.commons.math3.util.FastMath;
 
 import java.lang.ref.WeakReference;
+import java.text.ChoiceFormat;
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.ParsePosition;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
@@ -75,12 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
             //setup the amplitude plot
             {
-                int numPoints = 4000;
+                int numPoints = 3000;
 
                 amplitudePlot = findViewById(R.id.amplitudePlot);
                 amplitudeSeries = new RollingXYSeries(numPoints, new WeakReference<>(amplitudePlot.getRenderer(FastLineAndPointRenderer.class)));
 
                 FastLineAndPointRenderer.Formatter series1Format = new FastLineAndPointRenderer.Formatter(Color.GREEN, Color.GREEN, null);
+
                 //LineAndPointFormatter series1Format =
                 //        new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels);
                 series1Format.setPointLabeler(null);
@@ -88,6 +94,33 @@ public class MainActivity extends AppCompatActivity {
                 amplitudePlot.addSeries(amplitudeSeries, series1Format);
                 amplitudePlot.setDomainBoundaries(0, numPoints, BoundaryMode.FIXED);
                 amplitudePlot.getLegend().setVisible(false);
+                amplitudePlot.getGraph().setMarginLeft(75);
+
+
+                //integer x/y axis label formatting
+                amplitudePlot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
+                    @Override
+                    public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                        int i = Math.round(((Number) obj).floatValue());
+                        return toAppendTo.append(i);
+                    }
+                    @Override
+                    public Object parseObject(String source, ParsePosition pos) {
+                        return null;
+                    }
+                });
+
+                amplitudePlot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.LEFT).setFormat(new Format() {
+                    @Override
+                    public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                        int i = Math.round(((Number) obj).floatValue());
+                        return toAppendTo.append(i);
+                    }
+                    @Override
+                    public Object parseObject(String source, ParsePosition pos) {
+                        return null;
+                    }
+                });
 
                 //NOTE: doesn't seem to be necessary to explicitly call this, oddly
                 //Add the draw start/finish listener, which is the custom series I made.
@@ -100,19 +133,34 @@ public class MainActivity extends AppCompatActivity {
 
             //setup the phase plot
             {
-                int numPoints = 4000;
+                int numPoints = 3000;
 
                 phasePlot = findViewById(R.id.phasePlot);
                 phaseSeries = new RollingXYSeries(numPoints, new WeakReference<>(phasePlot.getRenderer(FastLineAndPointRenderer.class)));
+
                 //LineAndPointFormatter series1Format = new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels_2);
                 FastLineAndPointRenderer.Formatter series1Format = new FastLineAndPointRenderer.Formatter(Color.RED, Color.RED, null);
-
                 series1Format.setPointLabeler(null);
                 series1Format.setVertexPaint(null);
                 series1Format.setInterpolationParams(null);
+
                 phasePlot.addSeries(phaseSeries, series1Format);
                 phasePlot.setDomainBoundaries(0, numPoints, BoundaryMode.FIXED);
                 phasePlot.getLegend().setVisible(false);
+                phasePlot.getGraph().setMarginLeft(75);
+
+                //integer x axis label formatting
+                phasePlot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
+                    @Override
+                    public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                        int i = Math.round(((Number) obj).floatValue());
+                        return toAppendTo.append(i);
+                    }
+                    @Override
+                    public Object parseObject(String source, ParsePosition pos) {
+                        return null;
+                    }
+                });
 
                 //NOTE: doesn't seem to be necessary to explicitly call this, oddly
                 //Add the draw start/finish listener, which is the custom series I made.
@@ -172,7 +220,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void AddSample(double sample) {
                     //skip data to reduce the num points (should probably filter before this decimation, but oh well)
-                    if (count++%10 == 0) phaseSeries.addDataThreadSafe(sample);
+                    /*if (count++%10 == 0) */
+                    phaseSeries.addDataThreadSafe(sample);
                 }
             };
             magCollector = new ISampleCollector() {
@@ -181,18 +230,22 @@ public class MainActivity extends AppCompatActivity {
                 private int count = 0;
                 @Override
                 public void AddSample(double sample) {
-                    if (count < BUFFER_SIZE){
+                    /*if (count < BUFFER_SIZE){
                         buffer[count] = sample;
                         count++;
                     }
                     else {
                         amplitudeSeries.addDataThreadSafe(Statistics.Average(buffer));
                         count =0;
-                    }
+                    }*/
+
+                    amplitudeSeries.addDataThreadSafe(sample);
                 }
             };
-            dlia = new DigitalLockInAmplifier(SAMPLE_RATE_RX, TX_FREQ_HZ, 4, 50,
-                    phaseCollector, magCollector, null);
+            //dlia = new DigitalLockInAmplifier(SAMPLE_RATE_RX, TX_FREQ_HZ, 4, 10,
+            //        phaseCollector, magCollector);
+            dlia = new DigitalLockInAmplifier(SAMPLE_RATE_RX, TX_FREQ_HZ, 4, 10, 10,
+                    phaseCollector, magCollector);
 
             //setup worker thread for polling/collecting audio recording bytes
             //todo: exception handling
@@ -219,7 +272,8 @@ public class MainActivity extends AppCompatActivity {
                                 SetErrorMessage("General audio error in thread");
                             } else {
                                 for (int sampleNum = 0; sampleNum < readResult; sampleNum++) {
-                                    ProcessMicSample(buffer[sampleNum]);//todo: maybe send whole buffer to save number of calls?
+                                    dlia.AddSample(buffer[sampleNum]);
+                                    //ProcessMicSample(buffer[sampleNum]);//todo: maybe send whole buffer to save number of calls?
                                 }
                             }
                         }
@@ -237,9 +291,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void ProcessMicSample(short sample) throws InterruptedException {
+    /*private void ProcessMicSample(short sample) throws InterruptedException {
         dlia.AddSample(sample);
-    }
+    }*/
 
     private void SetErrorMessage(String message)
     {

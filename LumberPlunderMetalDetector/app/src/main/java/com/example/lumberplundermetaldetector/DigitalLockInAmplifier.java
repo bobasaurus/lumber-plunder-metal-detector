@@ -13,54 +13,69 @@ public class DigitalLockInAmplifier  {
 
     private int sampleRate;
     private double frequency;
-    private long decimFactor;
     //TODO: examine uint vs int, overflow
-    private long decimCount = 0;
     private long nSample = 0;
+    private long decimFactor1, decimFactor2;
+    private long decimCount1 = 0;
+    private long decimCount2 = 0;
 
+    private OnlineFirFilter inputFilter;
     private OnlineFirFilter preDecimFilterI, preDecimFilterQ;
+    private OnlineFirFilter preDecimFilter2I, preDecimFilter2Q;
     private OnlineFirFilter postDecimFilterI, postDecimFilterQ;
 
-    private FMDiscriminator fmDiscrim = new FMDiscriminator(100000);
+    //private FMDiscriminator fmDiscrim = new FMDiscriminator(100000);
 
-    private ISampleCollector sampleCollectorPhase, sampleCollectorMag, sampleCollectorFreqDev;
+    private ISampleCollector sampleCollectorPhase, sampleCollectorMag;
 
-    private final static double TwoPi = 2 * Math.PI;
+    private final static double TwoPi = 2 * FastMath.PI;
 
     public double PhaseOffset;
     public double MagOffset;
 
-    private OnlineFirFilter phaseFilter, magFilter;
-    //private MathNet.Numerics.Statistics.MovingStatistics phaseStats = new MathNet.Numerics.Statistics.MovingStatistics(500);
-    //private MathNet.Numerics.Statistics.MovingStatistics magStats = new MathNet.Numerics.Statistics.MovingStatistics(500);
+    //private OnlineFirFilter phaseFilter, magFilter;
 
-    public DigitalLockInAmplifier(int sampleRate, double frequency, int decimFactor, double finalLPCutoffFrequency, ISampleCollector sampleCollectorPhase, ISampleCollector sampleCollectorMag, ISampleCollector sampleCollectorFreqDev)//, float referenceFrequency)
+    public DigitalLockInAmplifier(int sampleRate, double frequency, int decimFactor1, int decimFactor2, double postDecim2Cutoff, ISampleCollector sampleCollectorPhase, ISampleCollector sampleCollectorMag)//, float referenceFrequency)
     {
         this.sampleRate = sampleRate;
         this.frequency = frequency;
-        this.decimFactor = decimFactor;
+        this.decimFactor1 = decimFactor1;
+        this.decimFactor2 = decimFactor2;
         //if (sampleRate >= Int32.MaxValue) throw new Exception("Sample rate too high: " + sampleRate);
         this.sampleCollectorPhase = sampleCollectorPhase;
         this.sampleCollectorMag = sampleCollectorMag;
-        this.sampleCollectorFreqDev = sampleCollectorFreqDev;
+
+        double inputFilterFreq = frequency + 4000;
+        if (inputFilterFreq > (((double)sampleRate)/2)) inputFilterFreq = ((double)sampleRate)/2;
+        inputFilter = new OnlineFirFilter(OnlineFirFilter.CalcLowpassFilter(
+                sampleRate,
+                inputFilterFreq,
+                101));
 
         //filter out frequencies more than half the post-decim sample rate before decimating for anti-aliasing
         double[] preDiscrimCoeffs = OnlineFirFilter.CalcLowpassFilter(
                 sampleRate,
-                (((double)sampleRate)/decimFactor) / 2,
+                (((double)sampleRate)/decimFactor1) / 2,
                 101);
         preDecimFilterI = new OnlineFirFilter(preDiscrimCoeffs);
         preDecimFilterQ = new OnlineFirFilter(preDiscrimCoeffs);
 
+        double[] preDiscrimCoeffs2 = OnlineFirFilter.CalcLowpassFilter(
+                sampleRate / decimFactor1,
+                (((double)sampleRate)/decimFactor1/decimFactor2) / 2,
+                101);
+        preDecimFilter2I = new OnlineFirFilter(preDiscrimCoeffs2);
+        preDecimFilter2Q = new OnlineFirFilter(preDiscrimCoeffs2);
+
         //final filter after decimation, cutoff freq specified by caller
         double[] postDiscrimCoeffs = OnlineFirFilter.CalcLowpassFilter(
-                ((double)sampleRate) / decimFactor,
-                finalLPCutoffFrequency,
-                1001);
+                ((double)sampleRate) / decimFactor1 / decimFactor2,
+                postDecim2Cutoff,
+                201);
         postDecimFilterI = new OnlineFirFilter(postDiscrimCoeffs);
         postDecimFilterQ = new OnlineFirFilter(postDiscrimCoeffs);
 
-        phaseFilter = new OnlineFirFilter(OnlineFirFilter.CalcLowpassFilter(
+        /*phaseFilter = new OnlineFirFilter(OnlineFirFilter.CalcLowpassFilter(
                 ((double)sampleRate) / decimFactor,
                 10,
                 1001));
@@ -68,7 +83,7 @@ public class DigitalLockInAmplifier  {
         magFilter = new OnlineFirFilter(OnlineFirFilter.CalcLowpassFilter(
                 ((double)sampleRate) / decimFactor,
                 10,
-                1001));
+                1001));*/
 
         PhaseOffset = 0;
         MagOffset = 0;
@@ -78,9 +93,11 @@ public class DigitalLockInAmplifier  {
     {
         double multiple = TwoPi * frequency / sampleRate;
         double gain = 1;
-        double referenceInPhase = gain * Math.sin(nSample * multiple + PhaseOffset);
-        double referenceQuadrature = gain * Math.cos(nSample * multiple + PhaseOffset);
+        double referenceInPhase = gain * FastMath.sin(nSample * multiple + PhaseOffset);
+        double referenceQuadrature = gain * FastMath.cos(nSample * multiple + PhaseOffset);
         nSample++;
+
+        inputSample = inputFilter.ProcessSample(inputSample);
 
         double valueI = inputSample * referenceInPhase;
         double valueQ = inputSample * referenceQuadrature;
@@ -88,35 +105,41 @@ public class DigitalLockInAmplifier  {
         valueQ = preDecimFilterQ.ProcessSample(valueQ);
 
         //TODO: does this screw up on overflow?
-        if (decimCount++ % decimFactor == 0)
+        if (decimCount1++ % decimFactor1 == 0)
         {
-            valueI = postDecimFilterI.ProcessSample(valueI);
-            valueQ = postDecimFilterQ.ProcessSample(valueQ);
+            valueI = preDecimFilter2I.ProcessSample(valueI);
+            valueQ = preDecimFilter2Q.ProcessSample(valueQ);
 
-            //TODO: use fast atan2
-            double phaseRad = FastMath.atan2(valueQ, valueI);//angle in radians
-            double phaseDeg = 180.0 / Math.PI * phaseRad;
-            //var phaseDegNormalized = phaseDeg;
-            //while (phaseDegNormalized < 0) phaseDegNormalized += 360;
+            if (decimCount2++ % decimFactor2 == 0) {
 
-            double mag = Math.sqrt(valueI * valueI + valueQ * valueQ) - MagOffset;
+                valueI = postDecimFilterI.ProcessSample(valueI);
+                valueQ = postDecimFilterQ.ProcessSample(valueQ);
 
-            //double phaseSmooth = phaseFilter.Process((float)phaseDeg);
-            //double magSmooth = magFilter.Process((float)mag);
-            //phaseStats.Push(phaseSmooth);
-            //magStats.Push(magSmooth);
-            //phaseSmooth = phaseStats.Mean;
-            //magSmooth = magStats.Mean;
-            //var tid = (mag == 0) ? 0 : phaseSmooth / (magSmooth / 1_000_000);
+                //TODO: use fast atan2
+                double phaseRad = FastMath.atan2(valueQ, valueI);//angle in radians
+                double phaseDeg = 180.0 / FastMath.PI * phaseRad;
+                //var phaseDegNormalized = phaseDeg;
+                //while (phaseDegNormalized < 0) phaseDegNormalized += 360;
 
-            double freqDev = fmDiscrim.FMDiscrimAllenFast(valueI, valueQ);
+                double mag = FastMath.sqrt(valueI * valueI + valueQ * valueQ) - MagOffset;
 
-            if (sampleCollectorFreqDev != null) sampleCollectorFreqDev.AddSample(freqDev);
-            if (sampleCollectorPhase != null) sampleCollectorPhase.AddSample(phaseDeg);
-            if (sampleCollectorMag != null) sampleCollectorMag.AddSample(mag);
+                //double phaseSmooth = phaseFilter.Process((float)phaseDeg);
+                //double magSmooth = magFilter.Process((float)mag);
+                //phaseStats.Push(phaseSmooth);
+                //magStats.Push(magSmooth);
+                //phaseSmooth = phaseStats.Mean;
+                //magSmooth = magStats.Mean;
+                //var tid = (mag == 0) ? 0 : phaseSmooth / (magSmooth / 1_000_000);
 
-            //ProcessedDataAvailable?.Invoke(valueI, valueQ);
-            //dataAvailableIQ.DLIA_DataAvailableCallback();
+                //double freqDev = fmDiscrim.FMDiscrimAllenFast(valueI, valueQ);
+
+                //if (sampleCollectorFreqDev != null) sampleCollectorFreqDev.AddSample(freqDev);
+                if (sampleCollectorPhase != null) sampleCollectorPhase.AddSample(phaseDeg);
+                if (sampleCollectorMag != null) sampleCollectorMag.AddSample(mag);
+
+                //ProcessedDataAvailable?.Invoke(valueI, valueQ);
+                //dataAvailableIQ.DLIA_DataAvailableCallback();
+            }
         }
     }
 
