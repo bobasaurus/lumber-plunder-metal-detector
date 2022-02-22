@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.media.AudioRecord;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidplot.Plot;
@@ -25,14 +27,28 @@ import com.androidplot.util.Redrawer;
 
 import org.apache.commons.math3.util.FastMath;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.ref.WeakReference;
 import java.text.ChoiceFormat;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
+import java.time.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
+    //files stored to this directory on the android file system:
+    ///storage/emulated/0/Android/data/com.example.lumberplundermetaldetector/files
+    //which is this directory when connected to windows:
+    //This PC\Pixel 3a\Internal shared storage\Android\data\com.example.lumberplundermetaldetector\files
+    private File externalFilesDir;
+
     private AudioManager audioManager;
 
     private XYPlot amplitudePlot;
@@ -44,12 +60,17 @@ public class MainActivity extends AppCompatActivity {
     private RollingXYSeries phaseSeries;
 
     private Button buttonStart;
+    private Button buttonRecord;
+    private ProgressBar progressBarMicAmp;
+    private TextView textViewStatus;
 
     private boolean threadQuit = false;
     private Thread thread;
 
+    private Timer volumeCheckTimer;
+
     private AudioRecord audioRecord;
-    private static final int SAMPLE_RATE_RX = 48000;//192000 is the max on my pixel 3a
+    private static final int SAMPLE_RATE_RX = 192000;//192000 is the max on my pixel 3a
 
     private AudioTrack audioTrack;
     private static final double TX_FREQ_HZ = 16000;
@@ -61,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ISampleCollector phaseCollector, magCollector;
 
+    private boolean isRecording = false;
+
+    private LinkedList<Short> amplitudeBuffer = new LinkedList<Short>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
             while (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
             }
+
+            progressBarMicAmp = findViewById(R.id.progressBarMicAmp);
+            textViewStatus = findViewById(R.id.textViewStatus);
+            textViewStatus.setText("Press Start to begin ->");
+
+            externalFilesDir = this.getExternalFilesDir(null);
 
             //check that the 3.5mm plug from the metal detector is plugged in
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -104,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         int i = Math.round(((Number) obj).floatValue());
                         return toAppendTo.append(i);
                     }
+
                     @Override
                     public Object parseObject(String source, ParsePosition pos) {
                         return null;
@@ -116,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                         int i = Math.round(((Number) obj).floatValue());
                         return toAppendTo.append(i);
                     }
+
                     @Override
                     public Object parseObject(String source, ParsePosition pos) {
                         return null;
@@ -156,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                         int i = Math.round(((Number) obj).floatValue());
                         return toAppendTo.append(i);
                     }
+
                     @Override
                     public Object parseObject(String source, ParsePosition pos) {
                         return null;
@@ -172,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //setup audio output
-            txBuffer = SinewaveGenerator.GenerateSinewave(SAMPLE_RATE_TX, TX_FREQ_HZ);
+            txBuffer = SinewaveGenerator.GenerateSinewave(SAMPLE_RATE_TX, TX_FREQ_HZ, Short.MAX_VALUE, 10);
 
             //todo: try using audioTrack.setNotificationMarkerPosition to track exact transmit position/phase for dlia sync?
             //https://stackoverflow.com/a/6655260/268399
@@ -181,6 +215,20 @@ public class MainActivity extends AppCompatActivity {
                     AudioFormat.ENCODING_PCM_16BIT, txBuffer.length,
                     AudioTrack.MODE_STATIC);
             audioTrack.write(txBuffer, 0, txBuffer.length);
+
+            buttonRecord = findViewById(R.id.recordButton);
+            buttonRecord.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isRecording) {
+                        isRecording = false;
+                        buttonRecord.setText("Record");
+                    } else {
+                        isRecording = true;
+                        buttonRecord.setText("Stop");
+                    }
+                }
+            });
 
             buttonStart = (Button) findViewById(R.id.startStopButton);
             buttonStart.setOnClickListener(new View.OnClickListener() {
@@ -209,25 +257,39 @@ public class MainActivity extends AppCompatActivity {
             //setup audio recording
             int audioChannelConfig = AudioFormat.CHANNEL_IN_MONO;
             int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
-            int bufferSizeInBytes = AudioRecord.getMinBufferSize(SAMPLE_RATE_RX, audioChannelConfig, audioEncoding);
+            //just using the min buffer size causes occasional blips at lower sample rates, or regular ~40 ms blips at higher sample rates
+            //for 192k, only buffers > min*80 seem to remove most of the blips, but this causes a long time delay on the graphs
+            //maybe stick with lower sample rates if possible
+
+            //todo: maybe try using OpenSL to stream audio data more smoothly? (google "low latency" audio recording for android)
+            //https://developer.android.com/ndk/guides/audio/opensl/opensl-for-android
+            //other latency topics:
+            //https://stackoverflow.com/search?q=android+audiorecord+latency
+            //https://developer.android.com/ndk/guides/audio/audio-latency
+
+            //need bigger than the min buffer size to avoid blips on missed samples (from garbage collection, system events, etc delaying collection)
+            //min buffer size for 192000 sps = 15352, smallest buffer without lots of missed sample blips = 15352 * 100 = 4 seconds!!!
+            int bufferSizeInBytes = AudioRecord.getMinBufferSize(SAMPLE_RATE_RX, audioChannelConfig, audioEncoding) * 100;
             audioRecord = new AudioRecord(MediaRecorder.AudioSource.UNPROCESSED, SAMPLE_RATE_RX, audioChannelConfig, audioEncoding, bufferSizeInBytes);
 
-            
 
             //setup the digital lock-in amplifier
             phaseCollector = new ISampleCollector() {
                 private int count = 0;
+
                 @Override
                 public void AddSample(double sample) {
                     //skip data to reduce the num points (should probably filter before this decimation, but oh well)
                     /*if (count++%10 == 0) */
-                    phaseSeries.addDataThreadSafe(sample);
+
+                    //phaseSeries.addDataThreadSafe(sample);
                 }
             };
             magCollector = new ISampleCollector() {
                 private final int BUFFER_SIZE = 10;
                 private double[] buffer = new double[BUFFER_SIZE];
                 private int count = 0;
+
                 @Override
                 public void AddSample(double sample) {
                     /*if (count < BUFFER_SIZE){
@@ -244,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
             };
             //dlia = new DigitalLockInAmplifier(SAMPLE_RATE_RX, TX_FREQ_HZ, 4, 10,
             //        phaseCollector, magCollector);
-            dlia = new DigitalLockInAmplifier(SAMPLE_RATE_RX, TX_FREQ_HZ, 4, 10, 10,
+            dlia = new DigitalLockInAmplifier(SAMPLE_RATE_RX, TX_FREQ_HZ, 16, 10, 10,
                     phaseCollector, magCollector);
 
             //setup worker thread for polling/collecting audio recording bytes
@@ -256,34 +318,72 @@ public class MainActivity extends AppCompatActivity {
             thread = new Thread(new Runnable() {
                 public void run() {
                     try {
+
+                        FileWriter fileWriter = null;
                         //audioRecord.registerAudioRecordingCallback();
                         short[] buffer = new short[bufferSizeInBytes / 4];
                         audioRecord.startRecording();
 
                         while (!threadQuit) {
-                            int readResult = audioRecord.read(buffer, 0, bufferSizeInBytes / 4);
+                            //using a smaller read size than the buffer size to avoid latency issues with big buffers (and big buffers are required to avoid garbage collector missed data blips)
+                            //https://stackoverflow.com/a/39230480/268399
+                            //todo: I noticed a gradual latency increase, try running for a while and see if the graph lag increases
+                            int readResult = audioRecord.read(buffer, 0, 512);//bufferSizeInBytes / 4);
                             if (readResult == AudioRecord.ERROR_INVALID_OPERATION) {
-                                SetErrorMessage("Invalid operation in thread");
+                                //removed the error reporting here temporarily since it may be causing occasional blips/delays when catching up on reading audio data, needs more testing
+                                //SetErrorMessage("Invalid operation in thread");
                             } else if (readResult == AudioRecord.ERROR_BAD_VALUE) {
-                                SetErrorMessage("Bad value in thread");
+                                //SetErrorMessage("Bad value in thread");
                             } else if (readResult == AudioRecord.ERROR_DEAD_OBJECT) {
-                                SetErrorMessage("Dead object in thread");
+                                //SetErrorMessage("Dead object in thread");
                             } else if (readResult == AudioRecord.ERROR) {
-                                SetErrorMessage("General audio error in thread");
+                                //SetErrorMessage("General audio error in thread");
                             } else {
                                 for (int sampleNum = 0; sampleNum < readResult; sampleNum++) {
-                                    dlia.AddSample(buffer[sampleNum]);
-                                    //ProcessMicSample(buffer[sampleNum]);//todo: maybe send whole buffer to save number of calls?
+                                    if (isRecording) {
+                                        if (fileWriter == null) {
+
+                                            int volumeLevel = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+
+                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd HH_mm_ss z");
+                                            Date date = new Date(System.currentTimeMillis());
+                                            String filename = formatter.format(date) + String.format(" %d SPS %.1f Hz %d vol", SAMPLE_RATE_RX, TX_FREQ_HZ, volumeLevel) + (isPlaying ? " playing" : " stopped") + ".txt";
+
+                                            File file = new File(externalFilesDir, filename);
+
+                                            fileWriter = new FileWriter(file);
+                                        }
+
+                                        fileWriter.write(String.format("%d\r\n", buffer[sampleNum]));
+                                    } else {
+                                        if (fileWriter != null) {
+                                            fileWriter.close();
+                                            fileWriter = null;
+                                            //SetStatusMessage("Wrote file");
+                                        }
+
+                                        amplitudeBuffer.addLast(buffer[sampleNum]);
+                                        while (amplitudeBuffer.size() > 20)
+                                            amplitudeBuffer.removeFirst();
+                                        double amp = Statistics.Max(amplitudeBuffer);
+                                        SetProgressMicAmp((int) Math.round(amp));
+
+                                        dlia.AddSample(buffer[sampleNum]);
+                                    }
                                 }
                             }
                         }
                     } catch (Exception ex) {
-                        SetErrorMessage("thread error: " + ex.getMessage());
+                        //SetErrorMessage("thread error: " + ex.getMessage());
                     }
                 }
             });
 
             thread.start();
+
+            volumeCheckTimer = new Timer();
+            volumeCheckTimer.schedule(new VolumeCheckTask(), 0, 500);
         }
         catch (Exception ex){
             //todo: better error/status logging
@@ -291,20 +391,61 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private int prevVolume = -1;
+    private class VolumeCheckTask extends TimerTask{
+        @Override
+        public void run() {
+            int volumeLevel = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            if (volumeLevel != prevVolume)
+            {
+                SetStatusMessage(String.format("output volume: %d", volumeLevel));
+                prevVolume = volumeLevel;
+            }
+        }
+    }
+
     /*private void ProcessMicSample(short sample) throws InterruptedException {
         dlia.AddSample(sample);
     }*/
 
+    //not thread safe
     private void SetErrorMessage(String message)
     {
-        //textView.post(new Runnable() {public void run() {textView.setText("Err: " + message);}});
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    //not thread safe
     private void SetStatusMessage(String message)
     {
-        //textView.post(new Runnable() {public void run() {textView.setText(message);}});
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //textView.post(new Runnable() {public void run() {textView.setText(message);}});
+                //Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                textViewStatus.setText(message);
+            }
+        });
+
+    }
+
+    private long lastProgressMicAmpUpdateTime = System.currentTimeMillis();
+    private void SetProgressMicAmp(int value){
+        long current = System.currentTimeMillis();
+
+        if ((current - lastProgressMicAmpUpdateTime) > 30) {
+            lastProgressMicAmpUpdateTime = current;
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBarMicAmp.setProgress(value, false);
+                }
+            });
+        }
     }
 
     @Override

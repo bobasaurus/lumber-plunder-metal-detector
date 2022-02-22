@@ -12,9 +12,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/progressBarMicAmp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="32767" />
+
         <com.androidplot.xy.XYPlot
             android:id="@+id/amplitudePlot"
-            style="@style/APDefacto.Dark"
+            style="@style/APDefacto.Light"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             app:domainTitle="points"
@@ -27,7 +34,7 @@
 
         <com.androidplot.xy.XYPlot
             android:id="@+id/phasePlot"
-            style="@style/APDefacto.Dark"
+            style="@style/APDefacto.Light"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:domainTitle="points"
@@ -41,9 +48,30 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/recordButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Record"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status Text"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/startStopButton"
+        app:layout_constraintStart_toEndOf="@+id/recordButton"
+        app:layout_constraintTop_toTopOf="@+id/recordButton" />
+
+    <Button
         android:id="@+id/startStopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:text="Start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
