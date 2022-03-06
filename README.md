@@ -1,4 +1,4 @@
-# Lumber Plunder Metal Detector
+![logo](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/lumber%20plunder%20logo.png?raw=true)
 
 A VLF induction balance metal detector with a wooden body using an android smartphone for DSP and display.  
 
