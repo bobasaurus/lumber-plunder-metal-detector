@@ -8,6 +8,7 @@ This project is influenced by and tries to improve upon similar DIY metal detect
 * Neco Smart Hunter EN:  https://neco-desarrollo.es/smart-hunter
 * The vistac2000 pc-based metal detector with usb interface: https://www.geotech1.com/forums/showthread.php?14102-Let-s-made-a-PC-base-metal-detector-with-usb-interface-!!!
 * The TGSL (for the coil design): https://www.geotech1.com/forums/showthread.php?15710-TGSL-Complete-Details
+* More TGSL info: https://simplemetaldetector.com/induction-balance-metal-detectors/tesoro-golden-sabre-light-tlsl/
 
 ![detector cat](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/D82muwP.jpg?raw=true)
 
