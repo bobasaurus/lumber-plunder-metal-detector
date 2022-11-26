@@ -16,34 +16,46 @@
             android:id="@+id/progressBarMicAmp"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="32767" />
+            android:layout_height="25dp"
+            android:max="32767"
+            android:scaleY="5" />
 
         <com.androidplot.xy.XYPlot
             android:id="@+id/amplitudePlot"
             style="@style/APDefacto.Light"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="310dp"
             app:domainTitle="points"
             app:lineLabelRotationBottom="-45"
             app:lineLabels="left|bottom"
-            app:rangeTitle="amplitude"
-            app:title="Amplitude vs Time"
+            app:rangeTitle="ADC Value"
+            app:title="Mic ADC and Ref Phase Wave vs Time"
             app:renderMode="use_background_thread"
             />
 
+        <SeekBar
+            android:id="@+id/seekBarPhaseOffset"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:scaleY="2" />
+
+        <SeekBar
+            android:id="@+id/seekBarGroundBalance"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:scaleY="2" />
+
         <com.androidplot.xy.XYPlot
-            android:id="@+id/phasePlot"
+            android:id="@+id/metalSignalPlot"
             style="@style/APDefacto.Light"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:domainTitle="points"
             app:lineLabelRotationBottom="-45"
             app:lineLabels="left|bottom"
-            app:rangeTitle="phase diff [deg]"
-            app:title="Phase Diff vs Time"
+            app:rangeTitle="Signal"
             app:renderMode="use_background_thread"
-            />
+            app:title="Metal Signal vs Time" />
 
     </LinearLayout>
 
@@ -60,21 +72,24 @@
         android:id="@+id/textViewStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Status Text"
+
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/startStopButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/recordButton"
         app:layout_constraintTop_toTopOf="@+id/recordButton" />
 
-    <Button
-        android:id="@+id/startStopButton"
+    <TextView
+        android:id="@+id/textViewAdjustments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="Start"
+        android:text="Phase Off: 0.00 rad, GB Factor: 0.00"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/recordButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
