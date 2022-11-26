@@ -35,6 +35,7 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int SAMPLE_RATE_RX = 192000;//192000 is the max on my pixel 3a
 
     private AudioTrack audioTrack;
-    private static final double TX_FREQ_HZ = 16000;
+    private static final double TX_FREQ_HZ = 8000;
     private static final int SAMPLE_RATE_TX = 192000;
     private short txBuffer[];// = new short[SAMPLE_RATE_TX];
     private boolean isPlaying = false;
@@ -85,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRecording = false;
 
     private LinkedList<Short> amplitudeBuffer = new LinkedList<Short>();
+
+    private Short[] recordBuffer;
+    private int recordCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,13 +224,16 @@ public class MainActivity extends AppCompatActivity {
             buttonRecord.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isRecording) {
+                    /*if (isRecording) {
                         isRecording = false;
                         buttonRecord.setText("Record");
                     } else {
                         isRecording = true;
                         buttonRecord.setText("Stop");
-                    }
+                    }*/
+
+                    if (isRecording) return;
+                    isRecording = true;
                 }
             });
 
@@ -269,7 +276,8 @@ public class MainActivity extends AppCompatActivity {
 
             //need bigger than the min buffer size to avoid blips on missed samples (from garbage collection, system events, etc delaying collection)
             //min buffer size for 192000 sps = 15352, smallest buffer without lots of missed sample blips = 15352 * 100 = 4 seconds!!!
-            int bufferSizeInBytes = AudioRecord.getMinBufferSize(SAMPLE_RATE_RX, audioChannelConfig, audioEncoding) * 100;
+			//todo: should this be a method var?  I don't think it matters
+            int bufferSizeInBytes = AudioRecord.getMinBufferSize(SAMPLE_RATE_RX, audioChannelConfig, audioEncoding) * 50;
             audioRecord = new AudioRecord(MediaRecorder.AudioSource.UNPROCESSED, SAMPLE_RATE_RX, audioChannelConfig, audioEncoding, bufferSizeInBytes);
 
 
@@ -321,14 +329,14 @@ public class MainActivity extends AppCompatActivity {
 
                         FileWriter fileWriter = null;
                         //audioRecord.registerAudioRecordingCallback();
-                        short[] buffer = new short[bufferSizeInBytes / 4];
+                        short[] buffer = new short[bufferSizeInBytes / 2];
                         audioRecord.startRecording();
 
                         while (!threadQuit) {
                             //using a smaller read size than the buffer size to avoid latency issues with big buffers (and big buffers are required to avoid garbage collector missed data blips)
                             //https://stackoverflow.com/a/39230480/268399
-                            //todo: I noticed a gradual latency increase, try running for a while and see if the graph lag increases
-                            int readResult = audioRecord.read(buffer, 0, 512);//bufferSizeInBytes / 4);
+                            //note: I noticed a gradual latency increase when reading the full buffer at once, now I just read a small quantity to keep up with processing
+                            int readResult = audioRecord.read(buffer, 0, 512);//bufferSizeInBytes / 2);
                             if (readResult == AudioRecord.ERROR_INVALID_OPERATION) {
                                 //removed the error reporting here temporarily since it may be causing occasional blips/delays when catching up on reading audio data, needs more testing
                                 //SetErrorMessage("Invalid operation in thread");
@@ -343,6 +351,8 @@ public class MainActivity extends AppCompatActivity {
                                     if (isRecording) {
                                         if (fileWriter == null) {
 
+                                            SetStatusMessage("Starting to record...");
+
                                             int volumeLevel = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
 
@@ -353,14 +363,40 @@ public class MainActivity extends AppCompatActivity {
                                             File file = new File(externalFilesDir, filename);
 
                                             fileWriter = new FileWriter(file);
+
+                                            recordBuffer = new Short[SAMPLE_RATE_RX * 4];
+                                            recordCount = 0;
+
+                                            //clear the buffer
+                                            audioRecord.read(buffer, 0, bufferSizeInBytes / 2);
                                         }
 
-                                        fileWriter.write(String.format("%d\r\n", buffer[sampleNum]));
+                                        //note: phone can't keep up with writing samples this fast to disk, use a buffer instead (recording for 10 seconds only stores 4 sec worth of data right now, the rest is lagged in the audio buffer)
+                                        //fileWriter.write(String.format("%d\r\n", buffer[sampleNum]));
+                                        recordBuffer[recordCount] = buffer[sampleNum];
+                                        recordCount++;
+                                        if (recordCount >= recordBuffer.length) isRecording = false;
                                     } else {
                                         if (fileWriter != null) {
+
+                                            SetStatusMessage("Writing file...");
+
+                                            for (int i=0; i<recordBuffer.length; i++)
+                                                fileWriter.write(String.format("%d\r\n", recordBuffer[i]));
+
+                                            //fileWriter.flush();
                                             fileWriter.close();
                                             fileWriter = null;
                                             //SetStatusMessage("Wrote file");
+
+                                            recordCount = 0;
+                                            isRecording = false;
+                                            recordBuffer = null;//try to trigger the gc here rather than at the start
+
+                                            SetStatusMessage("Finished writing file");
+
+                                            //clear the buffer
+                                            audioRecord.read(buffer, 0, bufferSizeInBytes / 2);
                                         }
 
                                         amplitudeBuffer.addLast(buffer[sampleNum]);
@@ -419,14 +455,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //not thread safe
     private void SetStatusMessage(String message)
     {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //textView.post(new Runnable() {public void run() {textView.setText(message);}});
-                //Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                 textViewStatus.setText(message);
             }
         });
@@ -454,6 +489,8 @@ public class MainActivity extends AppCompatActivity {
 
         amplitudeRedrawer.start();
         phaseRedrawer.start();
+
+        //todo: clear the audio input buffer here
     }
 
     @Override
