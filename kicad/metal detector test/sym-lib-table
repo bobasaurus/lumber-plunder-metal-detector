@@ -1,5 +1,5 @@
 (sym_lib_table
   (lib (name "oled_allen")(type "KiCad")(uri "${KIPRJMOD}/libraries/oled_allen.kicad_sym")(options "")(descr ""))
   (lib (name "stm32_allen")(type "KiCad")(uri "${KIPRJMOD}/libraries/stm32_allen.kicad_sym")(options "")(descr ""))
-  (lib (name "LM4940 audio amp")(type "Legacy")(uri "${KIPRJMOD}/libraries/ul_LM4940TS-NOPB/KiCAD/2022-11-26_20-32-37/2022-11-26_20-32-37.lib")(options "")(descr ""))
+  (lib (name "LM4940 audio amp")(type "KiCad")(uri "${KIPRJMOD}/libraries/ul_LM4940TS-NOPB/KiCAD/2022-11-26_20-32-37/2022-11-26_20-32-37.kicad_sym")(options "")(descr ""))
 )
