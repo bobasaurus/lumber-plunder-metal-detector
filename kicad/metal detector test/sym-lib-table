@@ -5,4 +5,5 @@
   (lib (name "ul_MAX7423EUA-")(type "Legacy")(uri "${KIPRJMOD}/libraries/ul_MAX7423EUA-/KiCAD/2023-03-05_18-53-40/2023-03-05_18-53-40.lib")(options "")(descr ""))
   (lib (name "allen_opamp")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen_opamp.kicad_sym")(options "")(descr ""))
   (lib (name "allen_power")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen_power.kicad_sym")(options "")(descr ""))
+  (lib (name "allen_switch")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen_switch.kicad_sym")(options "")(descr ""))
 )
