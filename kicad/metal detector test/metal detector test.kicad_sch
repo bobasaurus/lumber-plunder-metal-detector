@@ -4400,7 +4400,7 @@
     (property "Reference" "FB1" (at 256.54 44.45 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "FerriteBead_Small" (at 253.9619 40.64 90)
+    (property "Value" "HZ0805E601R-10" (at 253.9619 40.64 90)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Inductor_SMD:L_0805_2012Metric_Pad1.05x1.20mm_HandSolder" (at 254 44.958 90)
