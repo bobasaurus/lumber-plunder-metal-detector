@@ -1,4 +1,4 @@
 (fp_lib_table
-  (lib (name "footprints")(type "KiCad")(uri "${KIPRJMOD}/libraries/ul_LM4940TS-NOPB/KiCAD/2022-11-26_20-32-37/footprints.pretty")(options "")(descr ""))
+  (version 7)
   (lib (name "allen footprints")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen footprints.pretty")(options "")(descr ""))
 )

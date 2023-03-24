@@ -1,9 +1,8 @@
 (sym_lib_table
   (version 7)
-  (lib (name "oled_allen")(type "KiCad")(uri "${KIPRJMOD}/libraries/oled_allen.kicad_sym")(options "")(descr ""))
-  (lib (name "stm32_allen")(type "KiCad")(uri "${KIPRJMOD}/libraries/stm32_allen.kicad_sym")(options "")(descr ""))
-  (lib (name "ul_MAX7423EUA-")(type "Legacy")(uri "${KIPRJMOD}/libraries/ul_MAX7423EUA-/KiCAD/2023-03-05_18-53-40/2023-03-05_18-53-40.lib")(options "")(descr ""))
   (lib (name "allen_opamp")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen_opamp.kicad_sym")(options "")(descr ""))
   (lib (name "allen_power")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen_power.kicad_sym")(options "")(descr ""))
   (lib (name "allen_switch")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen_switch.kicad_sym")(options "")(descr ""))
+  (lib (name "allen_stm32")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen_stm32.kicad_sym")(options "")(descr ""))
+  (lib (name "allen_oled")(type "KiCad")(uri "${KIPRJMOD}/libraries/allen_oled.kicad_sym")(options "")(descr ""))
 )
