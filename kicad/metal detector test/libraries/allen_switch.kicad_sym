@@ -9,7 +9,10 @@
     (property "Footprint" "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm" (at 6.35 -15.24 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at -10.16 5.08 0)
+    (property "Datasheet" "https://www.logiswitch.com/wp-content/uploads/LS10-Series-ICs-Technical-Details.pdf" (at -10.16 5.08 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "ki_description" "Switch Debounce IC" (at 0 0 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (symbol "LS20-S_0_1"

@@ -3,7 +3,7 @@
   (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
   (tags "SPST Button Switch")
   (attr smd)
-  (fp_text reference "SW?" (at 0 -3.15) (layer "F.SilkS")
+  (fp_text reference "REF**" (at 0 -3.15) (layer "F.SilkS")
       (effects (font (size 1 1) (thickness 0.15)))
     (tstamp 8f7fc4c8-3ead-4e7b-903e-333013476282)
   )

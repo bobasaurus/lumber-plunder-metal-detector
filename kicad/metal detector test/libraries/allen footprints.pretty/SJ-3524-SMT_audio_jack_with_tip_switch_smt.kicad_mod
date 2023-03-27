@@ -1,7 +1,7 @@
 (footprint "SJ-3524-SMT_audio_jack_with_tip_switch_smt" (version 20221018) (generator pcbnew)
   (layer "F.Cu")
   (attr smd)
-  (fp_text reference "J?" (at 7 -4.25 unlocked) (layer "F.SilkS")
+  (fp_text reference "REF**" (at 8.128 -4.064 unlocked) (layer "F.SilkS")
       (effects (font (size 1 1) (thickness 0.1)))
     (tstamp 9039d10d-baae-4e38-8143-250a88f2bfff)
   )

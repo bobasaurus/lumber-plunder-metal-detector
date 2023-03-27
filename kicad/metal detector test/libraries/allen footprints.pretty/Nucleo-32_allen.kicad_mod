@@ -3,7 +3,7 @@
   (descr "https://os.mbed.com/platforms/ST-Nucleo-F303K8/")
   (tags "stm32 nucleo nucleo32 nucleo-32 32 cortex")
   (attr through_hole)
-  (fp_text reference "U?" (at 2.54 -10.16) (layer "F.SilkS") hide
+  (fp_text reference "REF**" (at 2.54 -10.16) (layer "F.SilkS") hide
       (effects (font (size 1 1) (thickness 0.15)))
     (tstamp 509a0f1d-6540-44cd-97e5-cff4c62d3971)
   )
