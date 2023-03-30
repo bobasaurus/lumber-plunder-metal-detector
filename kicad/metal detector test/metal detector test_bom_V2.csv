@@ -1,61 +1,61 @@
-Component,Description,Part,References,Value,Footprint,Quantity Per PCB,Datasheet,MPN,Alt MPN,on hand,to order,on list or have?
-1,Multiple-cell battery,Battery,BT1,12V (18650 x3),PinHeader_1x02_P2.54mm_Vertical,1,~,106990288,,0,2,y
-2,"Unpolarized capacitor, small symbol",C_Small,C8,10n,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,1,~,,,100,0,y
-3,"Unpolarized capacitor, small symbol",C_Small,C7 C26,33n,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,2,~,,,0,4,y
-4,"Unpolarized capacitor, small symbol",C_Small,C4 C5 C6 C10 C13 C14 C16 C18 C20 C23 C24 C27 C28 C29 C30,100n,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,15,~,,,100,0,y
-5,"Unpolarized capacitor, small symbol",C_Small,C9 C19,.33u,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,2,~,,,0,4,y
-6,"Unpolarized capacitor, small symbol",C_Small,C2,470n,C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,1,~,,,0,2,y
-7,"Polarized capacitor, small US symbol",C_Polarized_Small_US,C11 C21,3.3u,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,2,~,,,0,4,y
-8,"Polarized capacitor, small US symbol",C_Polarized_Small_US,C12,10u,C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,1,~,,,100,0,y
-9,"Polarized capacitor, small US symbol",C_Polarized_Small_US,C3,22u,C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,1,~,,,0,2,y
-10,"Polarized capacitor, small US symbol",C_Polarized_Small_US,C1 C17,100u,C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,2,~,,,100,0,y
-11,"Polarized capacitor, US symbol",C_Polarized_US,C15 C22 C25,1000u,CP_Radial_D10.0mm_P5.00mm,3,~,A750MV108M1EAAE014,,0,6,y
-12,Teyleten Robot 2.42 inch 128x64 OLED Display Module SSD1309 With 7 Pin SPI/IIC Interface,2.42_inch_128x64_oled,DS1,2.42_inch_128x64_oled,oled_2.42in_128x64,1,https://www.amazon.com/gp/product/B09LND6QJ1/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1#customerReviews,B09LND6QJ1,,2,0,y
-13,"Ferrite bead, small symbol",FerriteBead_Small,FB1,ferrite bead smt,L_0805_2012Metric_Pad1.05x1.20mm_HandSolder,1,~,HZ0805E601R-10,,0,2,y
-14,"Audio Jack, 3 Poles (Stereo / TRS), Switched T Pole (Normalling)",AudioJack3_SwitchT,J1,3.5mm audio jack TRS,SJ-3524-SMT_audio_jack_with_tip_switch_smt,1,~,SJ-3524-SMT,,0,2,y
-15,"Solder Jumper, 2-pole, open",SolderJumper_2_Open,JP1 JP2 JP3 JP4,SolderJumper_2_Open,SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm,4,~,,,dns,dns,
-16,Inductor,L,L_TX1 L_TX2,5m6,PinHeader_1x02_P2.54mm_Vertical,2,~,,,dns,dns,
-17,Inductor,L,L_RX1,6m1,PinHeader_1x02_P2.54mm_Vertical,1,~,,,dns,dns,
-18,Speaker,Speaker,LS1,Ext. Speaker,PinHeader_1x02_P2.54mm_Vertical,1,~,,,dns,dns,
-19,Speaker,Speaker,LS2,SMT Speaker,CDS-13138-SMT-TR_speaker_smt,1,~,CDS-13138-SMT-TR,,0,2,y
-20,"NPN transistor, base/collector/emitter",Q_NPN_BCE,Q2,NPN,SOT-89-3_Handsoldering_allen,1,~,2SC5824T100Q,,0,2,y
-21,"PNP transistor, base/collector/emitter",Q_PNP_BCE,Q1,PNP,SOT-89-3_Handsoldering_allen,1,~,2SA2071T100Q,,0,2,y
-22,"Resistor, small US symbol",R_Small_US,R13 R16,2.7,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,2,~,,,0,4,y
-23,"Resistor, small US symbol",R_Small_US,R3,560,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,,0,2,y
-24,"Resistor, small US symbol",R_Small_US,R2,1.2k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,,0,2,y
-25,"Resistor, small US symbol",R_Small_US,R11,2k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,,0,2,y
-26,"Resistor, small US symbol",R_Small_US,R15 R17,5k1,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,2,~,,,0,4,y
-27,"Resistor, small US symbol",R_Small_US,R12,10k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,,100,0,y
-28,"Resistor, small US symbol",R_Small_US,R9,12k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,,0,2,y
-29,"Resistor, small US symbol",R_Small_US,R4 R8,18k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,2,~,,,0,4,y
-30,"Resistor, small US symbol",R_Small_US,R1,27k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,,0,2,y
-31,"Resistor, small US symbol",R_Small_US,R10,33k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,,0,2,y
-32,"Resistor, small US symbol",R_Small_US,R14 R18,50k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,2,~,,,0,4,y
-33,"Resistor, small US symbol",R_Small_US,R5 R6 R7 R19 R20,100k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,5,~,,,100,0,y
-34,Single Pole Single Throw (SPST) switch,SW_SPST,SW0 SW1 SW2 SW3 SW4 SW5 SW6 SW7 SW8,SW_SPST,SW_SPST_PTS647,9,~,PTS 647 SN50 SMTR2 LFS,,0,18,y
-35,Single Pole Single Throw (SPST) switch,SW_SPST,SW9,SW_SPST,A11AH_right_angle_toggle_switch,1,~,A11AH,,0,2,y
-36,"700mA Micropower Low drop-out regulator, Fixed Output 3.3V, SOT-223",LT1129-3.3_SOT223,U5 U10,3.3v lin reg,SOT-223-3_TabPin2,2,https://www.analog.com/media/en/technical-documentation/data-sheets/112935ff.pdf,LT1129CST-3.3#PBF,UA78M33QDCYRG4Q1,6,0,y
-37,"Positive 1.5A 35V Linear Regulator, Fixed Output 5V, TO-220/TO-263/TO-252",L7805,U4 U9,5v lin reg,SOT-223-3_TabPin2,2,http://www.st.com/content/ccc/resource/technical/document/datasheet/41/4f/b3/b0/12/d4/47/88/CD00000444.pdf/files/CD00000444.pdf/jcr:content/translations/en.CD00000444.pdf,UA78M05CDCYRG3,LM2940IMP-5.0/NOPB,4,0,y
-38,"700mA Micropower Low drop-out regulator, Fixed Output 3.3V, SOT-223",LT1129-3.3_SOT223,U1,9v lin reg,SOT-223-3_TabPin2,1,https://www.analog.com/media/en/technical-documentation/data-sheets/112935ff.pdf,LM2940IMP-9.0/NOPB,,4,0,y
-39,"Stereo 11W Audio Power Amplifier, TO-263-7",LM4752TS,U6,audio amp,TO-263-7_TabPin4,1,http://www.ti.com/lit/ds/symlink/lm4752.pdf,LM4752TS,,2,0,y
-40,Switched Cap Low-Pass Filter,MAX7423EUA+_allen,U7 U11,lp filter,TSSOP-8_4.4x3mm_P0.65mm,2,https://www.analog.com/media/en/technical-documentation/data-sheets/max7418-max7425.pdf,MAX7423EUA+,,2,2,y
-41,STM32 NUCLEO32 module with the STM32F303K8 MCU,NUCLEO-F303K8,U3,nucleo-32 uC module,Nucleo-32_allen,1,https://www.st.com/resource/en/user_manual/um1956-stm32-nucleo32-boards-mb1180-stmicroelectronics.pdf,NUCLEO-F303K8,,2,0,y
-42,"Precision, 10-MHz, Low-Noise, Low-Power, RRIO, CMOS Operational Amplifier, SOIC-8",OPA2140AID,U2,op amp (higher voltage),SOIC-8_3.9x4.9mm_P1.27mm,1,https://www.ti.com/lit/gpn/OPA2320,OPA2140AID,,2,0,y
-43,"Precision, 10-MHz, Low-Noise, Low-Power, RRIO, CMOS Operational Amplifier, SOIC-8",OPA2320AID,U12,op amp (lower voltage),SOIC-8_3.9x4.9mm_P1.27mm,1,https://www.ti.com/lit/gpn/OPA2320,OPA2320AID,,2,0,y
-44,Switch Debounce IC,LS20-S,U8,switch debounce,SOIC-20W_7.5x12.8mm_P1.27mm,1,https://www.logiswitch.com/wp-content/uploads/LS10-Series-ICs-Technical-Details.pdf,LS20-S,,0,2,y
-,,,,,,,,,,,,
-,,,,,,,,,,,,
-,,,,,,,,,,,,
-,,,,,,,,,,,,
-,,,,,,,,,,,,
-Component Groups:,44,,,,,,,,,,,
-Component Count:,87,,,,,,,,,,,
-Fitted Components:,87,,,,,,,,,,,
-Number of PCBs:,1,,,,,,,,,,,
-Total components:,87,,,,,,,,,,,
-Schematic Version:,V2,,,,,,,,,,,
-Schematic Date:,3/24/2023,,,,,,,,,,,
-PCB Variant:,default,,,,,,,,,,,
-BoM Date:,3/26/2023 11:11,,,,,,,,,,,
-Schematic Source:,metal detector test.kicad_sch,,,,,,,,,,,
-KiCad Version:,Eeschema 7.0.1,,,,,,,,,,,
+Component,Description,Part,References,Value,Footprint,Quantity Per PCB,Datasheet,MPN,Alt MPN
+1,Multiple-cell battery,Battery,BT1,12V (18650 x3),PinHeader_1x02_P2.54mm_Vertical,1,~,106990288,
+2,"Unpolarized capacitor, small symbol",C_Small,C8,10n,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,1,~,,
+3,"Unpolarized capacitor, small symbol",C_Small,C7 C26,33n,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,2,~,,
+4,"Unpolarized capacitor, small symbol",C_Small,C4 C5 C6 C10 C13 C14 C16 C18 C20 C23 C24 C27 C28 C29 C30,100n,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,15,~,,
+5,"Unpolarized capacitor, small symbol",C_Small,C9 C19,.33u,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,2,~,,
+6,"Unpolarized capacitor, small symbol",C_Small,C2,470n,C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,1,~,,
+7,"Polarized capacitor, small US symbol",C_Polarized_Small_US,C11 C21,3.3u,C_Polarized_0805_2012Metric_HandSolder_allen,2,~,,
+8,"Polarized capacitor, small US symbol",C_Polarized_Small_US,C12,10u,C_Polarized_1206_3216Metric_HandSolder_allen,1,~,,
+9,"Polarized capacitor, small US symbol",C_Polarized_Small_US,C3,22u,C_Polarized_1206_3216Metric_HandSolder_allen,1,~,,
+10,"Polarized capacitor, small US symbol",C_Polarized_Small_US,C1 C17,100u,C_Polarized_1206_3216Metric_HandSolder_allen,2,~,,
+11,"Polarized capacitor, US symbol",C_Polarized_US,C15 C22 C25,1000u,CP_Radial_D10.0mm_P5.00mm,3,~,A750MV108M1EAAE014,
+12,Teyleten Robot 2.42 inch 128x64 OLED Display Module SSD1309 With 7 Pin SPI/IIC Interface,2.42_inch_128x64_oled,DS1,2.42_inch_128x64_oled,oled_2.42in_128x64,1,https://www.amazon.com/gp/product/B09LND6QJ1/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1#customerReviews,B09LND6QJ1,
+13,"Ferrite bead, small symbol",FerriteBead_Small,FB1,ferrite bead smt,L_0805_2012Metric_Pad1.05x1.20mm_HandSolder,1,~,HZ0805E601R-10,
+14,"Audio Jack, 3 Poles (Stereo / TRS), Switched T Pole (Normalling)",AudioJack3_SwitchT,J1,3.5mm audio jack TRS,SJ-3524-SMT_audio_jack_with_tip_switch_smt,1,~,SJ-3524-SMT,
+15,"Solder Jumper, 2-pole, open",SolderJumper_2_Open,JP1 JP2 JP3 JP4,SolderJumper_2_Open,SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm,4,~,,
+16,Inductor,L,L_TX1 L_TX2,5m6,PinHeader_1x02_P2.54mm_Vertical,2,~,,
+17,Inductor,L,L_RX1,6m1,PinHeader_1x02_P2.54mm_Vertical,1,~,,
+18,Speaker,Speaker,LS1,Ext. Speaker,PinHeader_1x02_P2.54mm_Vertical,1,~,,
+19,Speaker,Speaker,LS2,SMT Speaker,CDS-13138-SMT-TR_speaker_smt,1,~,CDS-13138-SMT-TR,
+20,"NPN transistor, base/collector/emitter",Q_NPN_BCE,Q2,NPN,SOT-89-3_Handsoldering_allen,1,~,2SC5824T100Q,
+21,"PNP transistor, base/collector/emitter",Q_PNP_BCE,Q1,PNP,SOT-89-3_Handsoldering_allen,1,~,2SA2071T100Q,
+22,"Resistor, small US symbol",R_Small_US,R13 R16,2.7,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,2,~,,
+23,"Resistor, small US symbol",R_Small_US,R3,560,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,
+24,"Resistor, small US symbol",R_Small_US,R2,1.2k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,
+25,"Resistor, small US symbol",R_Small_US,R11,2k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,
+26,"Resistor, small US symbol",R_Small_US,R15 R17,5k1,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,2,~,,
+27,"Resistor, small US symbol",R_Small_US,R12,10k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,
+28,"Resistor, small US symbol",R_Small_US,R9,12k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,
+29,"Resistor, small US symbol",R_Small_US,R4 R8,18k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,2,~,,
+30,"Resistor, small US symbol",R_Small_US,R1,27k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,
+31,"Resistor, small US symbol",R_Small_US,R10,33k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,1,~,,
+32,"Resistor, small US symbol",R_Small_US,R14 R18,49.9k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,2,~,,
+33,"Resistor, small US symbol",R_Small_US,R5 R6 R7 R19 R20,100k,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,5,~,,
+34,Single Pole Single Throw (SPST) switch,SW_SPST,SW0 SW1 SW2 SW3 SW4 SW5 SW6 SW7 SW8,SW_SPST,SW_SPST_PTS647,9,~,PTS 647 SN50 SMTR2 LFS,
+35,Single Pole Single Throw (SPST) switch,SW_SPST,SW9,SW_SPST,A11AH_right_angle_toggle_switch,1,~,A11AH,
+36,"700mA Micropower Low drop-out regulator, Fixed Output 3.3V, SOT-223",LT1129-3.3_SOT223,U5 U10,3.3v lin reg,SOT-223-3_TabPin2,2,https://www.analog.com/media/en/technical-documentation/data-sheets/112935ff.pdf,LT1129CST-3.3#PBF,UA78M33QDCYRG4Q1
+37,"Positive 1.5A 35V Linear Regulator, Fixed Output 5V, TO-220/TO-263/TO-252",L7805,U4 U9,5v lin reg,SOT-223-3_TabPin2,2,https://www.ti.com/lit/ds/slvs059t/slvs059t.pdf,UA78M05CDCYRG3,LM2940IMP-5.0/NOPB
+38,"700mA Micropower Low drop-out regulator, Fixed Output 3.3V, SOT-223",LT1129-3.3_SOT223,U1,9v lin reg,SOT-223-3_TabPin2,1,https://www.ti.com/lit/ds/symlink/lm2940-n.pdf?HQS=dis-dk-null-digikeymode-dsf-pf-null-wwe&ts=1680023082050&ref_url=https%253A%252F%252Fwww.ti.com%252Fgeneral%252Fdocs%252Fsuppproductinfo.tsp%253FdistId%253D10%2526gotoUrl%253Dhttps%253A%252F%252Fwww.ti.com%252Flit%252Fgpn%252Flm2940-n,LM2940IMP-9.0/NOPB,
+39,"Stereo 11W Audio Power Amplifier, TO-263-7",LM4752TS,U6,audio amp,TO-263-7_TabPin4,1,http://www.ti.com/lit/ds/symlink/lm4752.pdf,LM4752TS,
+40,Switched Cap Low-Pass Filter,MAX7423EUA+_allen,U7 U11,lp filter,TSSOP-8_4.4x3mm_P0.65mm,2,https://www.analog.com/media/en/technical-documentation/data-sheets/max7418-max7425.pdf,MAX7423EUA+,
+41,STM32 NUCLEO32 module with the STM32F303K8 MCU,NUCLEO-F303K8,U3,nucleo-32 uC module,Nucleo-32_allen,1,https://www.st.com/resource/en/user_manual/um1956-stm32-nucleo32-boards-mb1180-stmicroelectronics.pdf,NUCLEO-F303K8,
+42,"Precision, 10-MHz, Low-Noise, Low-Power, RRIO, CMOS Operational Amplifier, SOIC-8",OPA2140AID,U2,op amp (higher voltage),SOIC-8_3.9x4.9mm_P1.27mm,1,https://www.ti.com/lit/ds/symlink/opa2140.pdf?HQS=dis-dk-null-digikeymode-dsf-pf-null-wwe&ts=1680023654676&ref_url=https%253A%252F%252Fwww.ti.com%252Fgeneral%252Fdocs%252Fsuppproductinfo.tsp%253FdistId%253D10%2526gotoUrl%253Dhttps%253A%252F%252Fwww.ti.com%252Flit%252Fgpn%252Fopa2140,OPA2140AID,
+43,"Precision, 10-MHz, Low-Noise, Low-Power, RRIO, CMOS Operational Amplifier, SOIC-8",OPA2320AID,U12,op amp (lower voltage),SOIC-8_3.9x4.9mm_P1.27mm,1,https://www.ti.com/lit/gpn/OPA2320,OPA2320AID,
+44,Switch Debounce IC,LS20-S,U8,switch debounce,SOIC-20W_7.5x12.8mm_P1.27mm,1,https://www.logiswitch.com/wp-content/uploads/LS10-Series-ICs-Technical-Details.pdf,LS20-S,
+
+
+
+
+
+Component Groups:,44
+Component Count:,87
+Fitted Components:,87
+Number of PCBs:,1
+Total components:,87
+Schematic Version:,V2
+Schematic Date:,2023-03-24
+PCB Variant:,default
+BoM Date:,3/28/2023 11:18:38 AM
+Schematic Source:,metal detector test.kicad_sch
+KiCad Version:,Eeschema 7.0.1
