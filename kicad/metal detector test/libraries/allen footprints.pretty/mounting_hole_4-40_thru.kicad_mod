@@ -1,0 +1,14 @@
+(footprint "mounting_hole_4-40_thru" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (descr "free fit clearance drill hole for a 4-40 screw")
+  (attr through_hole)
+  (fp_text reference "REF**" (at 0.254 -2.413 unlocked) (layer "F.SilkS") hide
+      (effects (font (size 1 1) (thickness 0.1)))
+    (tstamp d5f26d81-f3c3-4d14-b5c3-94763e9273f2)
+  )
+  (fp_text value "mounting_hole_4-40_thru" (at -0.127 2.286 unlocked) (layer "F.Fab") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 04707ea0-7f96-4fc9-b394-ec09e5b46e6d)
+  )
+  (pad "" np_thru_hole circle (at 0 0) (size 3.2639 3.2639) (drill 3.2639) (layers "F&B.Cu" "*.Mask" "Dwgs.User") (tstamp d4e7ad9e-3209-4411-85c7-1ef1f779000d))
+)
