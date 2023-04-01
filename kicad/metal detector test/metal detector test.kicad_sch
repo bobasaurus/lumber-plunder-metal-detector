@@ -2389,6 +2389,9 @@
   (junction (at 247.65 100.33) (diameter 0) (color 0 0 0 0)
     (uuid 2d15a8a9-b127-4d43-b4cf-4f3deb8d82db)
   )
+  (junction (at 251.46 140.97) (diameter 0) (color 0 0 0 0)
+    (uuid 32f4cff0-4de4-4e70-9b72-3327b518f88e)
+  )
   (junction (at 54.61 81.28) (diameter 0) (color 0 0 0 0)
     (uuid 3317663d-89e4-4ab0-9246-35f1e98a51a9)
   )
@@ -2482,7 +2485,7 @@
   (junction (at 168.91 97.79) (diameter 0) (color 0 0 0 0)
     (uuid 817fb8b9-d94c-4f98-b34a-c126d076df0b)
   )
-  (junction (at 218.44 140.97) (diameter 0) (color 0 0 0 0)
+  (junction (at 181.61 90.17) (diameter 0) (color 0 0 0 0)
     (uuid 82518ed0-5799-42db-aa5f-8fddd03fcf34)
   )
   (junction (at 85.09 156.21) (diameter 0) (color 0 0 0 0)
@@ -2526,9 +2529,6 @@
   )
   (junction (at 247.65 113.03) (diameter 0) (color 0 0 0 0)
     (uuid c70d93d6-a667-4832-85e8-1dd4ce8782b0)
-  )
-  (junction (at 251.46 140.97) (diameter 0) (color 0 0 0 0)
-    (uuid c87efeec-8f1f-4d60-9f0f-50b39722c83c)
   )
   (junction (at 115.57 31.75) (diameter 0) (color 0 0 0 0)
     (uuid cce842da-d1ad-4b3e-b2d3-03225927a6a3)
@@ -2677,17 +2677,9 @@
     (stroke (width 0) (type default))
     (uuid 230a96e1-df3c-4740-b087-82de47b19fb0)
   )
-  (wire (pts (xy 191.77 97.79) (xy 195.58 97.79))
-    (stroke (width 0) (type default))
-    (uuid 2537259c-6865-4edb-97d0-8bca91c0dbeb)
-  )
   (wire (pts (xy 245.11 66.04) (xy 190.5 66.04))
     (stroke (width 0) (type default))
     (uuid 26e55263-e200-45a7-bd99-abe8e7ac9551)
-  )
-  (wire (pts (xy 251.46 140.97) (xy 246.38 140.97))
-    (stroke (width 0) (type default))
-    (uuid 278ab581-846f-4143-b0bb-991359111d6d)
   )
   (wire (pts (xy 30.48 147.32) (xy 30.48 148.59))
     (stroke (width 0) (type default))
@@ -2808,10 +2800,6 @@
   (wire (pts (xy 62.23 114.3) (xy 62.23 116.84))
     (stroke (width 0) (type default))
     (uuid 5b8a2c0f-2d29-4d38-b497-00623ed7b55a)
-  )
-  (wire (pts (xy 246.38 140.97) (xy 246.38 134.62))
-    (stroke (width 0) (type default))
-    (uuid 5d80917c-e63a-4210-b99f-d4a76088a810)
   )
   (wire (pts (xy 62.23 116.84) (xy 54.61 116.84))
     (stroke (width 0) (type default))
@@ -3025,10 +3013,6 @@
     (stroke (width 0) (type default))
     (uuid b0e56ba1-5cfe-479b-b6d6-fde05fdcf6b7)
   )
-  (wire (pts (xy 228.6 148.59) (xy 232.41 148.59))
-    (stroke (width 0) (type default))
-    (uuid b101a308-a77d-496c-85b6-4d2318325e08)
-  )
   (wire (pts (xy 137.16 107.95) (xy 143.51 107.95))
     (stroke (width 0) (type default))
     (uuid b23adc59-08a0-4018-9d1d-ef2a3e97ee3d)
@@ -3101,6 +3085,10 @@
     (stroke (width 0) (type default))
     (uuid bffd1c79-04ed-492f-a5f8-e814bfb41be4)
   )
+  (wire (pts (xy 251.46 134.62) (xy 251.46 140.97))
+    (stroke (width 0) (type default))
+    (uuid c2025484-0bea-422e-8d32-5eadf140e72c)
+  )
   (wire (pts (xy 247.65 100.33) (xy 247.65 102.87))
     (stroke (width 0) (type default))
     (uuid c2f87506-2e88-4a73-ac26-68be45276a08)
@@ -3140,6 +3128,10 @@
   (wire (pts (xy 46.99 162.56) (xy 46.99 172.72))
     (stroke (width 0) (type default))
     (uuid cde085df-13c5-462c-8059-d5b9fa124723)
+  )
+  (wire (pts (xy 191.77 97.79) (xy 195.58 97.79))
+    (stroke (width 0) (type default))
+    (uuid cea3cb10-127b-4722-9043-298ecbe42e86)
   )
   (wire (pts (xy 123.19 107.95) (xy 109.22 107.95))
     (stroke (width 0) (type default))
@@ -3228,6 +3220,10 @@
   (wire (pts (xy 15.24 20.32) (xy 22.86 20.32))
     (stroke (width 0) (type default))
     (uuid e867e253-6858-4f81-967b-715b19f9a8d9)
+  )
+  (wire (pts (xy 228.6 148.59) (xy 232.41 148.59))
+    (stroke (width 0) (type default))
+    (uuid e8f2a361-f26a-44d7-aedc-db20c9c70c6c)
   )
   (wire (pts (xy 20.32 88.9) (xy 40.64 88.9))
     (stroke (width 0) (type default))
@@ -3349,7 +3345,7 @@
     (uuid 7e364b02-95d8-410a-80a4-6bee71cd374b)
   )
   (text_box "unsure if load resistor needed"
-    (at 161.29 107.95 0) (size 19.05 5.08)
+    (at 157.48 109.22 0) (size 19.05 5.08)
     (stroke (width 0) (type default))
     (fill (type none))
     (effects (font (size 1.27 1.27)) (justify left top))
@@ -3746,22 +3742,22 @@
     )
   )
 
-  (symbol (lib_id "Device:C_Polarized_US") (at 222.25 140.97 90) (unit 1)
+  (symbol (lib_id "Device:C_Polarized_US") (at 185.42 90.17 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 04f7f216-b73c-4269-9ba2-d58204c5ef0a)
-    (property "Reference" "C23" (at 222.25 134.62 90)
+    (property "Reference" "C12" (at 185.42 83.82 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "1000u" (at 222.25 137.16 90)
+    (property "Value" "1000u" (at 185.42 86.36 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm" (at 222.25 140.97 0)
+    (property "Footprint" "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm" (at 185.42 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "~" (at 222.25 140.97 0)
+    (property "Datasheet" "~" (at 185.42 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "A750MV108M1EAAE014" (at 222.25 140.97 0)
+    (property "MPN" "A750MV108M1EAAE014" (at 185.42 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 9a59edac-3606-40de-ac19-481dc8f444ab))
@@ -3769,7 +3765,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C23") (unit 1)
+          (reference "C12") (unit 1)
         )
       )
     )
@@ -3778,7 +3774,7 @@
   (symbol (lib_id "power:GNDS") (at 54.61 116.84 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 0550aac0-1170-4bb9-b1ad-be4cc921c14c)
-    (property "Reference" "#PWR047" (at 54.61 123.19 0)
+    (property "Reference" "#PWR049" (at 54.61 123.19 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDS" (at 57.15 120.65 0)
@@ -3794,7 +3790,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR047") (unit 1)
+          (reference "#PWR049") (unit 1)
         )
       )
     )
@@ -3890,13 +3886,13 @@
     )
   )
 
-  (symbol (lib_id "Switch:SW_SPST") (at 25.4 93.98 0) (unit 1)
+  (symbol (lib_id "Switch:SW_SPST") (at 25.4 93.98 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 0ac98048-b2ef-4eeb-aa11-dc21ce40a953)
     (property "Reference" "SW1" (at 25.4 91.44 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "SW_SPST" (at 25.4 91.44 0)
+    (property "Value" "SW_SPST" (at 25.4 96.52 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "allen footprints:A11AH_right_angle_toggle_switch" (at 25.4 93.98 0)
@@ -3922,7 +3918,7 @@
   (symbol (lib_id "power:+3.3V") (at 67.31 109.22 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 0ad46ed2-1df8-43a6-b7e0-c99931b76e1d)
-    (property "Reference" "#PWR043" (at 63.5 109.22 0)
+    (property "Reference" "#PWR046" (at 63.5 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 71.12 109.22 90)
@@ -3938,7 +3934,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR043") (unit 1)
+          (reference "#PWR046") (unit 1)
         )
       )
     )
@@ -4116,7 +4112,7 @@
   (symbol (lib_id "Device:C_Small") (at 232.41 156.21 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 14526693-13ce-4c58-9fd5-3d4dd446d4e9)
-    (property "Reference" "C28" (at 234.95 154.9335 0)
+    (property "Reference" "C27" (at 234.95 154.9335 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100n" (at 234.95 157.4735 0)
@@ -4133,7 +4129,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C28") (unit 1)
+          (reference "C27") (unit 1)
         )
       )
     )
@@ -4195,7 +4191,7 @@
   (symbol (lib_id "Device:C_Small") (at 173.99 97.79 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 183b88f0-28e2-4df9-bc02-8bf464585e80)
-    (property "Reference" "C15" (at 173.9836 92.71 90)
+    (property "Reference" "C16" (at 173.9836 92.71 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "100n" (at 173.9836 95.25 90)
@@ -4212,7 +4208,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C15") (unit 1)
+          (reference "C16") (unit 1)
         )
       )
     )
@@ -4325,7 +4321,7 @@
   (symbol (lib_id "Device:C_Small") (at 104.14 97.79 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 1dd1b042-3612-4c7d-be16-2a8c9c55ce22)
-    (property "Reference" "C14" (at 99.06 96.52 0)
+    (property "Reference" "C15" (at 99.06 96.52 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100n" (at 97.79 99.06 0)
@@ -4342,7 +4338,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C14") (unit 1)
+          (reference "C15") (unit 1)
         )
       )
     )
@@ -4432,7 +4428,7 @@
   (symbol (lib_id "Device:C_Small") (at 85.09 158.75 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2760249e-29e2-4e2a-9782-1ca891e8f6cb)
-    (property "Reference" "C29" (at 87.63 157.4735 0)
+    (property "Reference" "C28" (at 87.63 157.4735 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100n" (at 87.63 160.0135 0)
@@ -4449,7 +4445,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C29") (unit 1)
+          (reference "C28") (unit 1)
         )
       )
     )
@@ -4651,26 +4647,26 @@
     )
   )
 
-  (symbol (lib_id "power:GNDPWR") (at 218.44 156.21 0) (unit 1)
+  (symbol (lib_id "power:GNDPWR") (at 181.61 105.41 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 31ec6ffd-5f51-4cc0-b7c7-825f5aa4d4e5)
-    (property "Reference" "#PWR055" (at 218.44 161.29 0)
+    (property "Reference" "#PWR040" (at 181.61 110.49 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "GNDPWR" (at 214.63 160.02 0)
+    (property "Value" "GNDPWR" (at 177.8 109.22 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (at 218.44 157.48 0)
+    (property "Footprint" "" (at 181.61 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 218.44 157.48 0)
+    (property "Datasheet" "" (at 181.61 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid b210dc85-bd1f-47c2-ba27-ccc5c976b632))
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR055") (unit 1)
+          (reference "#PWR040") (unit 1)
         )
       )
     )
@@ -4706,22 +4702,22 @@
     )
   )
 
-  (symbol (lib_id "Amplifier_Audio:LM4752TS") (at 220.98 148.59 0) (unit 2)
+  (symbol (lib_id "Amplifier_Audio:LM4752TS") (at 184.15 97.79 0) (unit 2)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3364511f-ccac-47a2-8423-ffd2f6176994)
-    (property "Reference" "U6" (at 213.36 152.4 0)
+    (property "Reference" "U6" (at 186.69 101.6 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "audio amp" (at 210.82 154.94 0)
+    (property "Value" "audio amp" (at 186.69 104.14 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Package_TO_SOT_SMD:TO-263-7_TabPin4" (at 220.98 148.59 0)
+    (property "Footprint" "Package_TO_SOT_SMD:TO-263-7_TabPin4" (at 184.15 97.79 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
-    (property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm4752.pdf" (at 220.98 148.59 0)
+    (property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm4752.pdf" (at 184.15 97.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "LM4752TS" (at 220.98 148.59 0)
+    (property "MPN" "LM4752TS" (at 184.15 97.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "5" (uuid 02c4a387-5108-4264-83d9-9447d4f4b883))
@@ -4743,7 +4739,7 @@
   (symbol (lib_id "power:GNDS") (at 85.09 161.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3382d920-d38b-4c29-84f7-359fc752b3d9)
-    (property "Reference" "#PWR058" (at 85.09 167.64 0)
+    (property "Reference" "#PWR057" (at 85.09 167.64 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDS" (at 82.55 160.02 90)
@@ -4759,32 +4755,32 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR058") (unit 1)
+          (reference "#PWR057") (unit 1)
         )
       )
     )
   )
 
-  (symbol (lib_id "power:+9V") (at 218.44 140.97 0) (unit 1)
+  (symbol (lib_id "power:+9V") (at 181.61 90.17 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3616c6c2-afd0-4edf-8b52-e4295fc8988f)
-    (property "Reference" "#PWR050" (at 218.44 144.78 0)
+    (property "Reference" "#PWR029" (at 181.61 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "+9V" (at 214.63 139.7 0)
+    (property "Value" "+9V" (at 177.8 88.9 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 218.44 140.97 0)
+    (property "Footprint" "" (at 181.61 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 218.44 140.97 0)
+    (property "Datasheet" "" (at 181.61 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 82f3b489-52bb-49fe-b4b2-89e3b2620625))
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR050") (unit 1)
+          (reference "#PWR029") (unit 1)
         )
       )
     )
@@ -4934,7 +4930,7 @@
   (symbol (lib_id "Device:C_Polarized_US") (at 238.76 148.59 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3dae83b8-4ba8-43a3-8f3a-d3e194cfda56)
-    (property "Reference" "C26" (at 238.76 142.24 90)
+    (property "Reference" "C25" (at 238.76 142.24 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "1000u" (at 238.76 144.78 90)
@@ -4954,7 +4950,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C26") (unit 1)
+          (reference "C25") (unit 1)
         )
       )
     )
@@ -5157,7 +5153,7 @@
   (symbol (lib_id "Device:C_Polarized_US") (at 201.93 97.79 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 49ea3897-cb91-4425-884a-47b14f8e198d)
-    (property "Reference" "C16" (at 200.66 91.44 90)
+    (property "Reference" "C17" (at 200.66 91.44 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "1000u" (at 200.66 93.98 90)
@@ -5177,7 +5173,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C16") (unit 1)
+          (reference "C17") (unit 1)
         )
       )
     )
@@ -5262,7 +5258,7 @@
   (symbol (lib_id "power:GNDA") (at 109.22 113.03 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 522e5297-dd03-4de2-a841-fb7f27f13ce6)
-    (property "Reference" "#PWR045" (at 109.22 119.38 0)
+    (property "Reference" "#PWR047" (at 109.22 119.38 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 111.76 116.84 0)
@@ -5278,7 +5274,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR045") (unit 1)
+          (reference "#PWR047") (unit 1)
         )
       )
     )
@@ -5314,7 +5310,7 @@
   (symbol (lib_id "Device:C_Small") (at 265.43 90.17 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 581bc6b2-8a63-48bf-93c9-9e29166a8343)
-    (property "Reference" "C12" (at 266.7 85.09 0)
+    (property "Reference" "C13" (at 266.7 85.09 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100n" (at 264.16 83.82 0)
@@ -5331,7 +5327,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C12") (unit 1)
+          (reference "C13") (unit 1)
         )
       )
     )
@@ -5388,22 +5384,22 @@
     )
   )
 
-  (symbol (lib_id "Amplifier_Audio:LM4752TS") (at 184.15 97.79 0) (unit 1)
+  (symbol (lib_id "Amplifier_Audio:LM4752TS") (at 220.98 148.59 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5a8006c6-b375-42f8-a56a-adae7ef9a507)
-    (property "Reference" "U6" (at 184.15 87.63 0)
+    (property "Reference" "U6" (at 220.98 138.43 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "audio amp" (at 184.15 90.17 0)
+    (property "Value" "audio amp" (at 220.98 140.97 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Package_TO_SOT_SMD:TO-263-7_TabPin4" (at 184.15 97.79 0)
+    (property "Footprint" "Package_TO_SOT_SMD:TO-263-7_TabPin4" (at 220.98 148.59 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
-    (property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm4752.pdf" (at 184.15 97.79 0)
+    (property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm4752.pdf" (at 220.98 148.59 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "LM4752TS" (at 184.15 97.79 0)
+    (property "MPN" "LM4752TS" (at 220.98 148.59 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "5" (uuid 1bdcb5cd-9b1f-4471-b25e-a9626f413015))
@@ -5532,7 +5528,7 @@
   (symbol (lib_id "Device:C_Small") (at 80.01 146.05 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5d0598f0-b821-42a2-9cd6-1f54135335e7)
-    (property "Reference" "C24" (at 74.93 144.78 0)
+    (property "Reference" "C23" (at 74.93 144.78 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100n" (at 73.66 147.32 0)
@@ -5549,7 +5545,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C24") (unit 1)
+          (reference "C23") (unit 1)
         )
       )
     )
@@ -5614,7 +5610,7 @@
   (symbol (lib_id "power:GNDPWR") (at 261.62 132.08 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6225dbe4-264a-4d7c-a32a-07d827ab391b)
-    (property "Reference" "#PWR049" (at 261.62 127 0)
+    (property "Reference" "#PWR051" (at 261.62 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDPWR" (at 265.43 128.27 0)
@@ -5630,7 +5626,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR049") (unit 1)
+          (reference "#PWR051") (unit 1)
         )
       )
     )
@@ -5776,7 +5772,7 @@
   (symbol (lib_id "Device:R_Small_US") (at 195.58 100.33 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6624e258-f977-4045-9cff-c80be061f23c)
-    (property "Reference" "R13" (at 191.77 99.06 0)
+    (property "Reference" "R13" (at 190.5 99.06 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "2.7" (at 190.5 101.6 0)
@@ -5962,7 +5958,7 @@
   (symbol (lib_id "power:GNDD") (at 247.65 97.79 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 74e100c4-1d7f-4d00-9c5b-32ce43a6bb2d)
-    (property "Reference" "#PWR035" (at 241.3 97.79 0)
+    (property "Reference" "#PWR037" (at 241.3 97.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 240.03 97.79 90)
@@ -5978,7 +5974,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR035") (unit 1)
+          (reference "#PWR037") (unit 1)
         )
       )
     )
@@ -5987,7 +5983,7 @@
   (symbol (lib_id "power:GNDA") (at 109.22 105.41 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 77398102-893b-44b5-8443-980cf898c607)
-    (property "Reference" "#PWR037" (at 102.87 105.41 0)
+    (property "Reference" "#PWR039" (at 102.87 105.41 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 106.68 105.41 90)
@@ -6003,7 +5999,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR037") (unit 1)
+          (reference "#PWR039") (unit 1)
         )
       )
     )
@@ -6012,7 +6008,7 @@
   (symbol (lib_id "power:GNDPWR") (at 168.91 102.87 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 79357344-4ac4-4b3d-87d5-10f49f93f544)
-    (property "Reference" "#PWR036" (at 168.91 107.95 0)
+    (property "Reference" "#PWR038" (at 168.91 107.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDPWR" (at 165.1 106.68 0)
@@ -6028,28 +6024,28 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR036") (unit 1)
+          (reference "#PWR038") (unit 1)
         )
       )
     )
   )
 
-  (symbol (lib_id "Device:C_Polarized_Small_US") (at 184.15 107.95 0) (unit 1)
+  (symbol (lib_id "Device:C_Polarized_Small_US") (at 220.98 158.75 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 79765eec-6369-4936-a18e-15f80a1fe74b)
-    (property "Reference" "C18" (at 189.23 106.68 0)
+    (property "Reference" "C29" (at 226.06 157.48 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "100u" (at 190.5 109.22 0)
+    (property "Value" "100u" (at 227.33 160.02 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "allen footprints:C_Polarized_1206_3216Metric_HandSolder_allen" (at 184.15 107.95 0)
+    (property "Footprint" "allen footprints:C_Polarized_1206_3216Metric_HandSolder_allen" (at 220.98 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "~" (at 184.15 107.95 0)
+    (property "Datasheet" "~" (at 220.98 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "" (at 184.15 107.95 0)
+    (property "MPN" "" (at 220.98 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 76eb50c1-2c5e-4eb6-b30c-e10043220178))
@@ -6057,7 +6053,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C18") (unit 1)
+          (reference "C29") (unit 1)
         )
       )
     )
@@ -6119,7 +6115,7 @@
   (symbol (lib_id "power:+BATT") (at 20.32 93.98 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 7d092e78-f692-4bce-8530-dc4839925a13)
-    (property "Reference" "#PWR030" (at 24.13 93.98 0)
+    (property "Reference" "#PWR032" (at 24.13 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+BATT" (at 17.78 93.98 90)
@@ -6135,7 +6131,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR030") (unit 1)
+          (reference "#PWR032") (unit 1)
         )
       )
     )
@@ -6227,26 +6223,26 @@
     )
   )
 
-  (symbol (lib_id "power:GNDPWR") (at 246.38 132.08 180) (unit 1)
+  (symbol (lib_id "power:GNDPWR") (at 251.46 132.08 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 7fdeb0e5-d535-4921-921f-ae6082bfab09)
-    (property "Reference" "#PWR048" (at 246.38 127 0)
+    (property "Reference" "#PWR050" (at 256.54 132.08 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "GNDPWR" (at 245.11 130.81 0)
+    (property "Value" "GNDPWR" (at 255.27 137.16 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (at 246.38 130.81 0)
+    (property "Footprint" "" (at 252.73 132.08 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 246.38 130.81 0)
+    (property "Datasheet" "" (at 252.73 132.08 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 153b0a52-a818-4f62-b0fb-a80a28a59737))
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR048") (unit 1)
+          (reference "#PWR050") (unit 1)
         )
       )
     )
@@ -6397,7 +6393,7 @@
   (symbol (lib_id "power:GNDPWR") (at 251.46 156.21 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 84e6874d-0a5d-4e06-8535-76721f366ee1)
-    (property "Reference" "#PWR056" (at 251.46 161.29 0)
+    (property "Reference" "#PWR055" (at 251.46 161.29 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDPWR" (at 247.65 160.02 0)
@@ -6413,7 +6409,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR056") (unit 1)
+          (reference "#PWR055") (unit 1)
         )
       )
     )
@@ -6657,7 +6653,7 @@
   (symbol (lib_id "power:GNDPWR") (at 205.74 105.41 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 943fb95b-ea84-4eb8-b0f1-7445f850eb99)
-    (property "Reference" "#PWR038" (at 205.74 110.49 0)
+    (property "Reference" "#PWR041" (at 205.74 110.49 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDPWR" (at 201.93 109.22 0)
@@ -6673,28 +6669,28 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR038") (unit 1)
+          (reference "#PWR041") (unit 1)
         )
       )
     )
   )
 
-  (symbol (lib_id "Device:Speaker") (at 251.46 132.08 0) (unit 1)
+  (symbol (lib_id "Device:Speaker") (at 246.38 134.62 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 94bcd6e5-c3dc-4d0a-8758-72b842e162e3)
-    (property "Reference" "LS1" (at 248.92 124.46 0)
+    (property "Reference" "LS1" (at 246.38 125.73 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "SMT Speaker" (at 250.19 127 0)
+    (property "Value" "SMT Speaker" (at 250.19 128.27 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "allen footprints:CDS-13138-SMT-TR_speaker_smt" (at 251.46 137.16 0)
+    (property "Footprint" "allen footprints:CDS-13138-SMT-TR_speaker_smt" (at 246.38 129.54 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "~" (at 251.206 133.35 0)
+    (property "Datasheet" "https://www.cuidevices.com/product/resource/cds-13138-smt.pdf" (at 246.634 133.35 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "CDS-13138-SMT-TR" (at 251.46 132.08 0)
+    (property "MPN" "CDS-13138-SMT-TR" (at 246.38 134.62 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid d08e994b-3ae0-4b4a-93d8-2d223207b1f7))
@@ -6736,7 +6732,7 @@
   (symbol (lib_id "power:GNDA") (at 104.14 95.25 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 95e20745-a54e-48bf-a543-304cb6f275ba)
-    (property "Reference" "#PWR032" (at 104.14 88.9 0)
+    (property "Reference" "#PWR034" (at 104.14 88.9 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 101.6 91.44 0)
@@ -6752,7 +6748,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR032") (unit 1)
+          (reference "#PWR034") (unit 1)
         )
       )
     )
@@ -6786,7 +6782,7 @@
   (symbol (lib_id "power:+BATT") (at 15.24 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9a3a7c16-1ce7-4366-ad01-495c397c73cb)
-    (property "Reference" "#PWR041" (at 15.24 113.03 0)
+    (property "Reference" "#PWR044" (at 15.24 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+BATT" (at 15.24 105.41 0)
@@ -6802,7 +6798,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR041") (unit 1)
+          (reference "#PWR044") (unit 1)
         )
       )
     )
@@ -6836,7 +6832,7 @@
   (symbol (lib_id "power:GNDPWR") (at 195.58 107.95 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 9aebe2cc-bd9b-4a4f-8242-060cb9411d29)
-    (property "Reference" "#PWR040" (at 195.58 113.03 0)
+    (property "Reference" "#PWR043" (at 195.58 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDPWR" (at 191.77 111.76 0)
@@ -6852,7 +6848,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR040") (unit 1)
+          (reference "#PWR043") (unit 1)
         )
       )
     )
@@ -6915,7 +6911,7 @@
   (symbol (lib_id "power:+5V") (at 40.64 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9d77c248-3904-4039-aaf1-16cb8cc321f3)
-    (property "Reference" "#PWR042" (at 40.64 113.03 0)
+    (property "Reference" "#PWR045" (at 40.64 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 40.64 105.41 0)
@@ -6931,7 +6927,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR042") (unit 1)
+          (reference "#PWR045") (unit 1)
         )
       )
     )
@@ -6987,26 +6983,26 @@
     )
   )
 
-  (symbol (lib_id "power:GNDPWR") (at 184.15 110.49 0) (unit 1)
+  (symbol (lib_id "power:GNDPWR") (at 220.98 161.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a133d91b-f02f-4ca0-8a7e-ffa58754dd6e)
-    (property "Reference" "#PWR044" (at 184.15 115.57 0)
+    (property "Reference" "#PWR058" (at 220.98 166.37 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "GNDPWR" (at 180.34 114.3 0)
+    (property "Value" "GNDPWR" (at 217.17 165.1 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (at 184.15 111.76 0)
+    (property "Footprint" "" (at 220.98 162.56 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 184.15 111.76 0)
+    (property "Datasheet" "" (at 220.98 162.56 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 3beffcf7-8b7b-46b3-b626-43f2a029282d))
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR044") (unit 1)
+          (reference "#PWR058") (unit 1)
         )
       )
     )
@@ -7066,7 +7062,7 @@
   (symbol (lib_id "power:GNDS") (at 40.64 97.79 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a60a1c07-5d01-4842-add5-3b50ac7daf85)
-    (property "Reference" "#PWR034" (at 46.99 97.79 0)
+    (property "Reference" "#PWR036" (at 46.99 97.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDS" (at 43.18 97.79 90)
@@ -7082,7 +7078,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR034") (unit 1)
+          (reference "#PWR036") (unit 1)
         )
       )
     )
@@ -7224,7 +7220,7 @@
   (symbol (lib_id "power:GNDA") (at 40.64 95.25 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid af9fc9ec-8ed1-4010-b156-a830c6980d2d)
-    (property "Reference" "#PWR031" (at 46.99 95.25 0)
+    (property "Reference" "#PWR033" (at 46.99 95.25 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 43.18 95.25 90)
@@ -7240,7 +7236,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR031") (unit 1)
+          (reference "#PWR033") (unit 1)
         )
       )
     )
@@ -7275,7 +7271,7 @@
   (symbol (lib_id "Device:C_Polarized_Small_US") (at 20.32 91.44 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid b60ebfe6-2e83-42ed-9b42-e710bf4e88b9)
-    (property "Reference" "C13" (at 13.97 88.9 0)
+    (property "Reference" "C14" (at 13.97 88.9 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "10u" (at 13.97 91.44 0)
@@ -7295,7 +7291,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C13") (unit 1)
+          (reference "C14") (unit 1)
         )
       )
     )
@@ -7450,7 +7446,7 @@
   (symbol (lib_id "power:GNDD") (at 40.64 92.71 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid bf33bf54-5e56-4815-ae4c-3b43f32b0783)
-    (property "Reference" "#PWR029" (at 46.99 92.71 0)
+    (property "Reference" "#PWR031" (at 46.99 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 43.18 92.71 90)
@@ -7466,7 +7462,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR029") (unit 1)
+          (reference "#PWR031") (unit 1)
         )
       )
     )
@@ -7585,7 +7581,7 @@
   (symbol (lib_id "Device:C_Small") (at 195.58 105.41 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c3ba9107-8d8d-401a-838f-fbe35feb6577)
-    (property "Reference" "C17" (at 198.12 104.1335 0)
+    (property "Reference" "C18" (at 198.12 104.1335 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100n" (at 198.12 106.6735 0)
@@ -7602,7 +7598,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C17") (unit 1)
+          (reference "C18") (unit 1)
         )
       )
     )
@@ -7611,7 +7607,7 @@
   (symbol (lib_id "Device:C_Small") (at 30.48 151.13 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c3d690f9-d6d8-414e-a97a-9280945c9d7e)
-    (property "Reference" "C27" (at 33.02 149.8662 0)
+    (property "Reference" "C26" (at 33.02 149.8662 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "33n" (at 33.02 152.4062 0)
@@ -7628,7 +7624,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C27") (unit 1)
+          (reference "C26") (unit 1)
         )
       )
     )
@@ -7637,7 +7633,7 @@
   (symbol (lib_id "power:GNDD") (at 274.32 95.25 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c3e6c837-e505-453c-92c5-93e32026d173)
-    (property "Reference" "#PWR033" (at 280.67 95.25 0)
+    (property "Reference" "#PWR035" (at 280.67 95.25 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDD" (at 281.94 95.25 90)
@@ -7653,7 +7649,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR033") (unit 1)
+          (reference "#PWR035") (unit 1)
         )
       )
     )
@@ -7796,22 +7792,22 @@
     )
   )
 
-  (symbol (lib_id "Amplifier_Audio:LM4752TS") (at 220.98 148.59 0) (unit 3)
+  (symbol (lib_id "Amplifier_Audio:LM4752TS") (at 184.15 97.79 0) (unit 3)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid cbb47f75-824c-4969-a69b-d50ffc755411)
-    (property "Reference" "U6" (at 219.71 147.3199 0)
+    (property "Reference" "U6" (at 182.88 96.5199 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Value" "audio amp" (at 219.71 149.8599 0)
+    (property "Value" "audio amp" (at 182.88 99.0599 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "Package_TO_SOT_SMD:TO-263-7_TabPin4" (at 220.98 148.59 0)
+    (property "Footprint" "Package_TO_SOT_SMD:TO-263-7_TabPin4" (at 184.15 97.79 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
-    (property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm4752.pdf" (at 220.98 148.59 0)
+    (property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm4752.pdf" (at 184.15 97.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "LM4752TS" (at 220.98 148.59 0)
+    (property "MPN" "LM4752TS" (at 184.15 97.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "5" (uuid 0a1d750f-f267-43fb-9a1c-40680f2b9694))
@@ -7887,7 +7883,7 @@
   (symbol (lib_id "power:+3.3VA") (at 109.22 107.95 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid cdd83a5d-1e86-462e-a1af-68d42cb05da3)
-    (property "Reference" "#PWR039" (at 113.03 107.95 0)
+    (property "Reference" "#PWR042" (at 113.03 107.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3VA" (at 105.41 108.585 90)
@@ -7903,7 +7899,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR039") (unit 1)
+          (reference "#PWR042") (unit 1)
         )
       )
     )
@@ -8048,7 +8044,7 @@
   (symbol (lib_id "power:GNDS") (at 27.94 116.84 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d964ba47-c345-41a8-9af8-0a5496915df0)
-    (property "Reference" "#PWR046" (at 27.94 123.19 0)
+    (property "Reference" "#PWR048" (at 27.94 123.19 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDS" (at 30.48 120.65 0)
@@ -8064,7 +8060,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR046") (unit 1)
+          (reference "#PWR048") (unit 1)
         )
       )
     )
@@ -8101,7 +8097,7 @@
   (symbol (lib_id "Device:C_Small") (at 210.82 148.59 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid dc4e7c3f-3f9b-4378-8af7-f095c8d3fc02)
-    (property "Reference" "C25" (at 210.8136 143.51 90)
+    (property "Reference" "C24" (at 210.8136 143.51 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "100n" (at 210.8136 146.05 90)
@@ -8118,7 +8114,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "C25") (unit 1)
+          (reference "C24") (unit 1)
         )
       )
     )
@@ -8202,26 +8198,26 @@
     )
   )
 
-  (symbol (lib_id "power:GNDPWR") (at 226.06 140.97 90) (unit 1)
+  (symbol (lib_id "power:GNDPWR") (at 189.23 90.17 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid e7bb45cf-4929-4a95-ac43-950930dedd1d)
-    (property "Reference" "#PWR051" (at 231.14 140.97 0)
+    (property "Reference" "#PWR030" (at 194.31 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "GNDPWR" (at 228.6 140.97 90)
+    (property "Value" "GNDPWR" (at 190.5 87.63 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "" (at 227.33 140.97 0)
+    (property "Footprint" "" (at 190.5 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 227.33 140.97 0)
+    (property "Datasheet" "" (at 190.5 90.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 74fc0fe6-335f-4f14-b50b-e5f2061c1b58))
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR051") (unit 1)
+          (reference "#PWR030") (unit 1)
         )
       )
     )
@@ -8529,7 +8525,7 @@
   (symbol (lib_id "power:GNDPWR") (at 232.41 158.75 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid feac22ea-57f9-47d6-9df7-f44090ce6168)
-    (property "Reference" "#PWR057" (at 232.41 163.83 0)
+    (property "Reference" "#PWR056" (at 232.41 163.83 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDPWR" (at 228.6 162.56 0)
@@ -8545,7 +8541,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "#PWR057") (unit 1)
+          (reference "#PWR056") (unit 1)
         )
       )
     )
