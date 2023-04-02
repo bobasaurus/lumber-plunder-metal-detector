@@ -6884,7 +6884,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp 1d264fff-f18a-47c3-bf53-8bfce2f08150)
-    (at 200.406 96.598 180)
+    (at 87.122 102.948 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
@@ -6929,7 +6929,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp 1d858516-5f04-4298-a5c5-868ce127860b)
-    (at 200.406 87.708 180)
+    (at 87.122 94.058 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
@@ -6974,7 +6974,7 @@
 
   (footprint "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" (layer "B.Cu")
     (tstamp 2885128c-5d20-4c5e-913b-8f8d893fbf10)
-    (at 216.027 78.31 90)
+    (at 76.2 112.268 -90)
     (descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC_7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing), generated with kicad-footprint-generator")
     (tags "capacitor handsolder")
     (property "Sheetfile" "metal detector test.kicad_sch")
@@ -7015,9 +7015,9 @@
       (stroke (width 0.1) (type solid)) (layer "B.Fab") (tstamp 297e8206-ccc7-4818-9ffc-958997be1fb7))
     (fp_line (start 1 0.625) (end 1 -0.625)
       (stroke (width 0.1) (type solid)) (layer "B.Fab") (tstamp b1105829-0b12-4b30-b9ff-939f597031df))
-    (pad "1" smd roundrect (at -1.0375 0 90) (size 1.175 1.45) (layers "B.Cu" "B.Paste" "B.Mask") (roundrect_rratio 0.212766)
+    (pad "1" smd roundrect (at -1.0375 0 270) (size 1.175 1.45) (layers "B.Cu" "B.Paste" "B.Mask") (roundrect_rratio 0.212766)
       (net 19 "+3.3V_uC") (pintype "passive") (tstamp 68bcfc04-e505-4845-b626-791b0ba023ed))
-    (pad "2" smd roundrect (at 1.0375 0 90) (size 1.175 1.45) (layers "B.Cu" "B.Paste" "B.Mask") (roundrect_rratio 0.212766)
+    (pad "2" smd roundrect (at 1.0375 0 270) (size 1.175 1.45) (layers "B.Cu" "B.Paste" "B.Mask") (roundrect_rratio 0.212766)
       (net 2 "GNDA") (pintype "passive") (tstamp 00420435-6e4b-4b1d-b809-c4423b0aa78a))
     (model "${KICAD6_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0805_2012Metric.wrl"
       (offset (xyz 0 0 0))
@@ -7028,7 +7028,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp 290957db-ad81-4678-b6f1-81325af2df97)
-    (at 208.026 96.598 180)
+    (at 94.742 102.948 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
@@ -9547,7 +9547,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp ab5164d7-af43-4d43-91b4-7997f0b54899)
-    (at 192.786 87.708 180)
+    (at 79.502 94.058 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
@@ -9592,7 +9592,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp b9afa227-26d5-403a-9fe5-29e02a80f5cb)
-    (at 215.646 87.708 180)
+    (at 102.362 94.058 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
@@ -9637,7 +9637,7 @@
 
   (footprint "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm" placed (layer "B.Cu")
     (tstamp be8e2187-bd71-4d72-8388-9c49b2300a67)
-    (at 208.026 77.978 90)
+    (at 70.612 104.14 90)
     (descr "SOIC, 20 Pin (JEDEC MS-013AC, https://www.analog.com/media/en/package-pcb-resources/package/233848rw_20.pdf), generated with kicad-footprint-generator ipc_gullwing_generator.py")
     (tags "SOIC SO")
     (property "MPN" "LS20-S")
@@ -9743,7 +9743,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp d4794d41-bc19-4611-a4c9-09512aa3984b)
-    (at 230.886 87.708 180)
+    (at 117.602 94.058 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
@@ -9788,7 +9788,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp e2c167ca-e855-481e-a331-0ac4b4f5056b)
-    (at 185.166 87.708 180)
+    (at 71.882 94.058 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
@@ -9833,7 +9833,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp f5186868-3681-4766-8109-c81610c58e8f)
-    (at 215.646 96.598 180)
+    (at 102.362 102.948 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
@@ -9878,7 +9878,7 @@
 
   (footprint "allen footprints:SW_SPST_PTS647" placed (layer "B.Cu")
     (tstamp f8b3b1f7-f847-4f6b-810f-aa34a78643b3)
-    (at 223.266 87.708 180)
+    (at 109.982 94.058 180)
     (descr "C&K Components SPST SMD PTS647 Series 4.5mm Tact Switch")
     (tags "SPST Button Switch")
     (property "MPN" "PTS 647 SN50 SMTR2 LFS")
