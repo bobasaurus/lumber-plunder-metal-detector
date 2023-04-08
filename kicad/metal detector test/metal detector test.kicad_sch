@@ -3575,7 +3575,7 @@
     (effects (font (size 1.27 1.27)) (justify left top))
     (uuid 43062be0-e334-4acc-8f25-42b5788b246f)
   )
-  (text_box "To use SW8, open SB2 and close JP1 (disables bachch tx)"
+  (text_box "To use SW6, open SB2 and close JP1 (disables bachch tx)"
     (at 193.04 12.7 0) (size 27.94 7.62)
     (stroke (width 0) (type default))
     (fill (type none))
@@ -3633,10 +3633,10 @@
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
-  (global_label "SW3" (shape input) (at 196.85 40.64 180) (fields_autoplaced)
+  (global_label "SW3" (shape input) (at 196.85 38.1 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 09d97d51-76bf-4766-ae67-ddf1454aa8c6)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 40.64 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 38.1 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
@@ -3696,10 +3696,10 @@
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
-  (global_label "SW1" (shape input) (at 196.85 30.48 180) (fields_autoplaced)
+  (global_label "SW1" (shape input) (at 196.85 43.18 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 3d78e19d-9030-4a1b-b3d2-2b7788bf868f)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 30.48 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 43.18 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
@@ -3759,17 +3759,17 @@
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
-  (global_label "SW6" (shape input) (at 217.17 53.34 0) (fields_autoplaced)
+  (global_label "SW6" (shape input) (at 233.68 31.75 0) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid 7a7a87b4-bd6c-4979-b9ea-a76be8443bb3)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 223.9462 53.34 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 240.4562 31.75 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
-  (global_label "SW4" (shape input) (at 196.85 43.18 180) (fields_autoplaced)
+  (global_label "SW4" (shape input) (at 196.85 30.48 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 7ad5b535-efc4-46dc-bfde-ab2d97277b18)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 43.18 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 30.48 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
@@ -3780,10 +3780,10 @@
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
-  (global_label "SW5" (shape input) (at 196.85 45.72 180) (fields_autoplaced)
+  (global_label "SW5" (shape input) (at 196.85 27.94 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 87a3f1e5-6d46-4b78-9779-ca90919a59b7)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 45.72 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 27.94 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
@@ -3808,10 +3808,10 @@
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
-  (global_label "SW8" (shape input) (at 233.68 31.75 0) (fields_autoplaced)
+  (global_label "SW8" (shape input) (at 217.17 53.34 0) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid d0e70b76-7f12-4d01-b904-d37aa99ac3b5)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 240.4562 31.75 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 223.9462 53.34 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
@@ -3829,17 +3829,17 @@
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
-  (global_label "SW0" (shape input) (at 196.85 27.94 180) (fields_autoplaced)
+  (global_label "SW0" (shape input) (at 196.85 45.72 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid e3cb7a43-e6ea-4cf1-9abd-89ad3e0098a9)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 27.94 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 45.72 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
-  (global_label "SW2" (shape input) (at 196.85 38.1 180) (fields_autoplaced)
+  (global_label "SW2" (shape input) (at 196.85 40.64 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid f834128d-58b2-4b36-8b61-ba5a7be62789)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 38.1 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 190.0738 40.64 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
@@ -4105,7 +4105,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 107.95 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 092b0c72-66d9-4164-940c-1144bb97de3e)
-    (property "Reference" "SW6" (at 248.92 106.68 0)
+    (property "Reference" "SW4" (at 248.92 106.68 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 105.41 0)
@@ -4125,7 +4125,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW6") (unit 1)
+          (reference "SW4") (unit 1)
         )
       )
     )
@@ -4134,7 +4134,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 25.4 93.98 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 0ac98048-b2ef-4eeb-aa11-dc21ce40a953)
-    (property "Reference" "SW1" (at 25.4 91.44 0)
+    (property "Reference" "SW10" (at 25.4 91.44 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 25.4 96.52 0)
@@ -4154,7 +4154,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW1") (unit 1)
+          (reference "SW10") (unit 1)
         )
       )
     )
@@ -4725,7 +4725,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 97.79 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 2ca0cbcf-4aca-421e-a070-1ce112f9c324)
-    (property "Reference" "SW2" (at 248.92 96.52 0)
+    (property "Reference" "SW0" (at 248.92 96.52 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 95.25 0)
@@ -4745,7 +4745,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW2") (unit 1)
+          (reference "SW0") (unit 1)
         )
       )
     )
@@ -4812,7 +4812,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 118.11 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 2f234e7d-5974-401a-b064-eb5f4ff347f3)
-    (property "Reference" "SW10" (at 248.92 116.84 0)
+    (property "Reference" "SW8" (at 248.92 116.84 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 115.57 0)
@@ -4832,7 +4832,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW10") (unit 1)
+          (reference "SW8") (unit 1)
         )
       )
     )
@@ -5723,7 +5723,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 115.57 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5eed5995-a9b4-401b-bc3f-475b1ccc384c)
-    (property "Reference" "SW9" (at 248.92 114.3 0)
+    (property "Reference" "SW7" (at 248.92 114.3 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 113.03 0)
@@ -5743,7 +5743,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW9") (unit 1)
+          (reference "SW7") (unit 1)
         )
       )
     )
@@ -5860,7 +5860,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 102.87 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 63f11fdb-26a7-4666-a6b9-9823951d568b)
-    (property "Reference" "SW4" (at 248.92 101.6 0)
+    (property "Reference" "SW2" (at 248.92 101.6 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 100.33 0)
@@ -5880,7 +5880,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW4") (unit 1)
+          (reference "SW2") (unit 1)
         )
       )
     )
@@ -5995,7 +5995,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 110.49 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 708ff64c-1c45-4d9e-9aad-c58e05563a8b)
-    (property "Reference" "SW7" (at 248.92 109.22 0)
+    (property "Reference" "SW5" (at 248.92 109.22 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 107.95 0)
@@ -6015,7 +6015,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW7") (unit 1)
+          (reference "SW5") (unit 1)
         )
       )
     )
@@ -6283,7 +6283,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 113.03 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 7e3ea488-1d8e-4de7-a41e-449b64c031eb)
-    (property "Reference" "SW8" (at 248.92 111.76 0)
+    (property "Reference" "SW6" (at 248.92 111.76 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 110.49 0)
@@ -6303,7 +6303,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW8") (unit 1)
+          (reference "SW6") (unit 1)
         )
       )
     )
@@ -6641,7 +6641,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 105.41 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 8baeac74-0d47-446b-a59c-46455054a8c0)
-    (property "Reference" "SW5" (at 248.92 104.14 0)
+    (property "Reference" "SW3" (at 248.92 104.14 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 102.87 0)
@@ -6661,7 +6661,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW5") (unit 1)
+          (reference "SW3") (unit 1)
         )
       )
     )
@@ -8451,7 +8451,7 @@
   (symbol (lib_id "Switch:SW_SPST") (at 252.73 100.33 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid f039e234-149b-4532-aaf9-c60337130e67)
-    (property "Reference" "SW3" (at 248.92 99.06 0)
+    (property "Reference" "SW1" (at 248.92 99.06 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "SW_SPST" (at 252.73 97.79 0)
@@ -8471,7 +8471,7 @@
     (instances
       (project "metal detector test"
         (path "/aac94249-970f-41d5-8c24-6bade512464d"
-          (reference "SW3") (unit 1)
+          (reference "SW1") (unit 1)
         )
       )
     )
