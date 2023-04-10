@@ -1,6 +1,6 @@
 ![logo](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/lumber%20plunder%20logo.png?raw=true)
 
-A VLF induction balance metal detector with a wooden body using an android smartphone for DSP and display.  
+A VLF induction balance metal detector with a wooden body.  Previously built with an android smartphone, currently switching to a STM32 Nucleo module and OLED display on a custom PCB.  
 
 ![wooden coil](https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/detector%20coil.jpg?raw=true)
 
@@ -15,8 +15,6 @@ This project is influenced by and tries to improve upon similar DIY metal detect
 The first version of the schematic is available here:
 
 https://github.com/bobasaurus/lumber-plunder-metal-detector/blob/main/images/lumber%20plunder%20metal%20detector%20schematic%20v1.pdf
-
-The android app is still in development, I'm learning as I go.  
 
 I followed the coil design and wrapping guides for the TGSL linked above, though using a thicker magnet wire I happened to have on hand (and using fewer wraps to reduce weight):
 
