@@ -92,6 +92,17 @@ extern uint8_t u8x8_byte_stm32_hw_spi(u8x8_t *u8x8, uint8_t msg,
  u8g2_SendBuffer(u8g2);
  }*/
 
+const float M_PI_F = (float)M_PI;
+
+//convert a voltage [V] to an 8-bit DAC output value
+uint32_t VoltageTo8BitDacValue(float voltage)
+{
+    if ((voltage < 0.0f) || (voltage > 3.3f)) return 0;//todo: output error?
+
+    uint32_t dacValue = (uint32_t) roundf(voltage * 255 / 3.3f);//todo: not the fastest with this function call... maybe come up with a better way eventually
+    return dacValue;
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -151,17 +162,48 @@ int main(void)
     u8g2_DrawStr(&u8g2, 0, 15, "hello");
     u8g2_SendBuffer(&u8g2);
 
-    HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
-    float dacDesiredVoltage1 = 1.55f;
-    uint32_t dacValue1 = (uint32_t) roundf(dacDesiredVoltage1 * 255 / 3.3f);
-    float dacActualVoltage1 = ((float)dacValue1)/255.0f * 3.3f;
-    HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue1);
+    //HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
+    //float dacDesiredVoltage1 = 1.55f;
+    //uint32_t dacValue1 = VoltageTo8BitDacValue(dacDesiredVoltage1);
+    //float dacActualVoltage1 = ((float)dacValue1)/255.0f * 3.3f;
+    //HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue1);
 
-    HAL_DAC_Start(&hdac2, DAC_CHANNEL_1);
-    float dacDesiredVoltage2 = 2.59f;
-    uint32_t dacValue2 = (uint32_t) roundf(dacDesiredVoltage2 * 255 / 3.3f);
-    float dacActualVoltage2 = ((float)dacValue2)/255.0f * 3.3f;
-    HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue2);//2.59V
+
+    HAL_DAC_Start(&hdac2, DAC_CHANNEL_1);  //audio out is on PA6 = DAC2/1
+    //float dacDesiredVoltage2 = 2.59f;
+    //uint32_t dacValue2 = (uint32_t) roundf(dacDesiredVoltage2 * 255 / 3.3f);
+    //float dacActualVoltage2 = ((float)dacValue2)/255.0f * 3.3f;
+    //HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue2);//2.59V
+
+
+    float amplitude = 0.5f;
+    float frequency = 300.0f;
+    float sampleRate = 1000.0f;//[samp/sec]
+    float sampleTime = 1.0f/sampleRate;//[sec/sample]
+
+
+    int samplesPerCycle = (int)roundf(1.0f/frequency * sampleRate);
+
+    uint32_t wave[samplesPerCycle];
+
+    for (int i=0; i<samplesPerCycle; i++){
+        float timeS = (i+1) * sampleTime;
+        float voltage = amplitude * sinf(2*3.14159265359f*frequency*timeS) + amplitude;
+        wave[i] = VoltageTo8BitDacValue(voltage);
+    }
+
+    int waveCount = 0;
+    uint32_t sampleTimeMS = (uint32_t)(sampleTime * 1000);
+    while (1) {
+        uint32_t waveValue = wave[waveCount];
+        HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, waveValue);
+
+        HAL_Delay(sampleTimeMS);
+
+        waveCount++;
+        if (waveCount >= samplesPerCycle) waveCount = 0;
+    }
+
 
     uint32_t adcValue1, adcValue2;
     while (1) {
@@ -222,11 +264,11 @@ int main(void)
         float voltage1 = ((float)adcValue1) / 4095 * 3.3f;
         float voltage2 = ((float)adcValue2) / 4095 * 3.3f;
 
-        snprintf(strBuffer, 30, "%.2f / %.2f V", voltage1, dacActualVoltage1);
+        snprintf(strBuffer, 30, "%.2f / %.2f V", voltage1, 0.0);//dacActualVoltage1);
         uint16_t width = u8g2_GetUTF8Width(&u8g2, strBuffer);
         u8g2_DrawStr(&u8g2, 128 / 2 - width / 2, 15, strBuffer);
 
-        snprintf(strBuffer, 30, "%.2f / %.2f V", voltage2, dacActualVoltage2);
+        snprintf(strBuffer, 30, "%.2f / %.2f V", voltage2, 0.0);//dacActualVoltage2);
         width = u8g2_GetUTF8Width(&u8g2, strBuffer);
         u8g2_DrawStr(&u8g2, 128 / 2 - width / 2, 30, strBuffer);
 
@@ -248,11 +290,12 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV2;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL16;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
