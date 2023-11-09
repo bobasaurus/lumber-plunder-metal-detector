@@ -176,7 +176,7 @@ int main(void)
     //HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue2);//2.59V
 
 
-    float amplitude = 0.5f;
+    float amplitude = 0.00f;
     float frequency = 300.0f;
     float sampleRate = 1000.0f;//[samp/sec]
     float sampleTime = 1.0f/sampleRate;//[sec/sample]
@@ -197,6 +197,22 @@ int main(void)
     while (1) {
         uint32_t waveValue = wave[waveCount];
         HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, waveValue);
+
+        u8g2_ClearBuffer(&u8g2);
+
+        GPIO_PinState pinState0 = HAL_GPIO_ReadPin(SW0_GPIO_Port, SW0_Pin);
+        int switch0State = (int)pinState0;//GPIO_PIN_RESET or GPIO_PIN_SET
+        snprintf(strBuffer, 30, "SW0:%d", switch0State);
+        u8g2_DrawStr(&u8g2, 0, 15, strBuffer);
+
+        GPIO_PinState pinState1 = HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin);
+        int switch1State = (int)pinState1;//GPIO_PIN_RESET or GPIO_PIN_SET
+        snprintf(strBuffer, 30, "SW1:%d", switch1State);
+        u8g2_DrawStr(&u8g2, 0, 30, strBuffer);
+
+
+        u8g2_SendBuffer(&u8g2);
+
 
         HAL_Delay(sampleTimeMS);
 
@@ -877,6 +893,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : SW0_Pin SW1_Pin */
+  GPIO_InitStruct.Pin = SW0_Pin|SW1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
