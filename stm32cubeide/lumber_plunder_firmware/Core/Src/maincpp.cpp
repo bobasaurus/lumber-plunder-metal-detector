@@ -10,6 +10,10 @@
 
 u8g2_t u8g2; // a structure which will contain all the data for one display
 
+extern "C" ADC_HandleTypeDef hadc1;
+extern "C" ADC_HandleTypeDef hadc2;
+extern "C" DAC_HandleTypeDef hdac1;
+extern "C" DAC_HandleTypeDef hdac2;
 extern "C" UART_HandleTypeDef huart2;
 
 extern "C" uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
@@ -29,21 +33,51 @@ int maincpp(void)
             u8x8_stm32_gpio_and_delay);
     u8g2_InitDisplay(&u8g2);
     u8g2_SetPowerSave(&u8g2, 0);
-
     //https://github.com/olikraus/u8g2/wiki/fntlist8
     //u8g2_SetFont(&u8g2, u8g2_font_nokiafc22_tu);
-    u8g2_SetFont(&u8g2, u8g2_font_ncenB14_tr);
+    //u8g2_SetFont(&u8g2, u8g2_font_ncenB14_tr);
     //u8g2_SetFont(&u8g2, u8g2_font_unifont_t_symbols);
-    //char strBuffer[30];
-    u8g2_DrawStr(&u8g2, 0, 15, "Hello World");
-    u8g2_SendBuffer(&u8g2);
+    u8g2_SetFont(&u8g2, u8g2_font_squeezed_r6_tr);
 
     uint8_t count = 0;
-    char buffer[30];
+    const int BUFFER_LEN = 30;
+    char buffer[BUFFER_LEN];
+    uint32_t adcValue2;
+
+    GPIO_TypeDef* switchPortList[8] = {SW0_GPIO_Port, SW1_GPIO_Port, SW2_GPIO_Port, SW3_GPIO_Port, SW4_GPIO_Port, SW5_GPIO_Port, SW7_GPIO_Port, SW8_GPIO_Port};
+    uint16_t switchPinList[8] = {SW0_Pin, SW1_Pin, SW2_Pin, SW3_Pin, SW4_Pin, SW5_Pin, SW7_Pin, SW8_Pin};
+
     while(1){
-        sprintf(buffer, "blah: %d\r\n", count);
-        count++;
-        HAL_UART_Transmit(&huart2, (uint8_t *)buffer, strlen(buffer), 1000);
+    	HAL_ADC_Start(&hadc2);
+		if (HAL_ADC_PollForConversion(&hadc2, 100) == HAL_OK) {
+			adcValue2 = HAL_ADC_GetValue(&hadc2);
+
+			float voltageAtADCInput = ((float)adcValue2)/4095 * 3.3;
+			//vout = vin * R2/(R1+R2)    where R2 is closest to gnd
+			//vin = vout * (R1+R2)/R2
+			float batteryVoltage = (100.0f+30.1f)/30.1f*voltageAtADCInput;
+
+			snprintf_(buffer, BUFFER_LEN, "BAT: %.2f [V]\r\n", batteryVoltage);//TODO: disable printf support, it gobbles up a lot of space (about 21% of flash on its own)
+			count++;
+			HAL_UART_Transmit(&huart2, (uint8_t *)buffer, strlen(buffer), 1000);
+
+			u8g2_ClearBuffer(&u8g2);
+			u8g2_DrawStr(&u8g2, 0, 6, buffer);
+
+			for (uint8_t i=0; i<8; i++)
+			{
+				GPIO_PinState pinState = HAL_GPIO_ReadPin(switchPortList[i], switchPinList[i]);
+				int switchNumber = i;
+				if (i >= 6) switchNumber = i+1;
+				snprintf_(buffer, BUFFER_LEN, "SW%d:%d", switchNumber, (int)pinState);
+				u8g2_DrawStr(&u8g2, 0, 12 + i*6, buffer);
+			}
+
+			u8g2_SendBuffer(&u8g2);
+		}
+
+
+
         HAL_Delay(250);
     }
 

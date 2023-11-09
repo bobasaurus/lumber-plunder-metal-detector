@@ -10,8 +10,10 @@
 
 #include "stm32f3xx_hal.h"
 #include <math.h>
-#include <stdio.h>
 #include <string.h>
+
+#include "printf.h"
+#include "main.h"
 
 extern "C" int maincpp(void);
 
