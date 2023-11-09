@@ -22,8 +22,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "u8g2\u8g2.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,8 +52,6 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
-u8g2_t u8g2; // a structure which will contain all the data for one display
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -73,11 +69,6 @@ static void MX_DAC2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-extern uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg,
-        uint8_t arg_int, void *arg_ptr);
-extern uint8_t u8x8_byte_stm32_hw_spi(u8x8_t *u8x8, uint8_t msg,
-        uint8_t arg_int, void *arg_ptr);
 
 /* USER CODE END 0 */
 
@@ -116,35 +107,14 @@ int main(void)
   MX_DAC1_Init();
   MX_DAC2_Init();
   /* USER CODE BEGIN 2 */
-
-  u8g2_Setup_ssd1309_128x64_noname2_f(&u8g2, U8G2_R0, u8x8_byte_stm32_hw_spi,
-          u8x8_stm32_gpio_and_delay);
-  u8g2_InitDisplay(&u8g2);
-  u8g2_SetPowerSave(&u8g2, 0);
-/* USER CODE END 2 */
-
-/* Infinite loop */
-/* USER CODE BEGIN WHILE */
-
-  //https://github.com/olikraus/u8g2/wiki/fntlist8
-  u8g2_SetFont(&u8g2, u8g2_font_nokiafc22_tu);
-  //u8g2_SetFont(&u8g2, u8g2_font_u8glib_4_tu);
-  //u8g2_SetFont(&u8g2, u8g2_font_ncenB14_tr);
-  //u8g2_SetFont(&u8g2, u8g2_font_unifont_t_symbols);
-  //char strBuffer[30];
-  u8g2_DrawStr(&u8g2, 0, 15, "HELLO4");
-  u8g2_SendBuffer(&u8g2);
-
+  maincpp();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
   /* USER CODE END 3 */
 }
 
