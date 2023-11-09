@@ -37,7 +37,7 @@ int maincpp(void)
     //u8g2_SetFont(&u8g2, u8g2_font_nokiafc22_tu);
     //u8g2_SetFont(&u8g2, u8g2_font_ncenB14_tr);
     //u8g2_SetFont(&u8g2, u8g2_font_unifont_t_symbols);
-    u8g2_SetFont(&u8g2, u8g2_font_squeezed_r6_tr);
+    u8g2_SetFont(&u8g2, u8g2_font_5x8_mr);
 
     uint8_t count = 0;
     const int BUFFER_LEN = 30;
@@ -62,7 +62,7 @@ int maincpp(void)
 			HAL_UART_Transmit(&huart2, (uint8_t *)buffer, strlen(buffer), 1000);
 
 			u8g2_ClearBuffer(&u8g2);
-			u8g2_DrawStr(&u8g2, 0, 6, buffer);
+			u8g2_DrawStr(&u8g2, 0, 7, buffer);
 
 			for (uint8_t i=0; i<8; i++)
 			{
@@ -70,7 +70,7 @@ int maincpp(void)
 				int switchNumber = i;
 				if (i >= 6) switchNumber = i+1;
 				snprintf_(buffer, BUFFER_LEN, "SW%d:%d", switchNumber, (int)pinState);
-				u8g2_DrawStr(&u8g2, 0, 12 + i*6, buffer);
+				u8g2_DrawStr(&u8g2, 0, 14 + i*7, buffer);
 			}
 
 			u8g2_SendBuffer(&u8g2);
