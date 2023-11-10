@@ -51,26 +51,22 @@ int maincpp(void)
     LL_ADC_REG_StartConversion(ADC2);
     for (uint32_t i=0; i<LL_ADC_DELAY_CALIB_ENABLE_ADC_CYCLES; i++);//overkill, but will work
     LL_ADC_REG_ReadConversionData12(ADC2);
-    HAL_Delay(10);
+    HAL_Delay(1);//this delay seems to matter the most?
     LL_ADC_Disable(ADC2);
+    HAL_Delay(1);
     LL_ADC_StartCalibration(ADC2, LL_ADC_SINGLE_ENDED);
     //while (LL_ADC_IsCalibrationOnGoing(ADC2));
     for (uint32_t i=0; i<LL_ADC_DELAY_CALIB_ENABLE_ADC_CYCLES; i++);//overkill, but will work
-    HAL_Delay(10);
+    HAL_Delay(1);
     LL_ADC_Enable(ADC2);
+    HAL_Delay(1);
 
+    uint16_t adcValue2;
     while(1)
     {
-    	//HAL_ADC_Start(&hadc2);
         LL_ADC_REG_StartConversion(ADC2);
-
-        //while (LL_ADC_IsActiveFlag_EOS(ADC2) == 0);
-
-        //if (HAL_ADC_PollForConversion(&hadc2, 100) == HAL_OK) {
-        HAL_Delay(250);
-
-        uint16_t adcValue2 = LL_ADC_REG_ReadConversionData12(ADC2);
-        //uint32_t adcValue2 = HAL_ADC_GetValue(&hadc2);
+        while (LL_ADC_IsActiveFlag_EOS(ADC2) == 0);
+        adcValue2 = LL_ADC_REG_ReadConversionData12(ADC2);
 
         float voltageAtADCInput = ((float)adcValue2)/4095 * 3.3;
         //vout = vin * R2/(R1+R2)    where R2 is closest to gnd
@@ -98,7 +94,7 @@ int maincpp(void)
 
 
 
-
+        HAL_Delay(250);
     }
 
     return 0;
