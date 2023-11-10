@@ -9,6 +9,7 @@
 #define INC_MAINCPP_H_
 
 #include "stm32f3xx_hal.h"
+#include "stm32f3xx_ll_adc.h"
 #include <math.h>
 #include <string.h>
 

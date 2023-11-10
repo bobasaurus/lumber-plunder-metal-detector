@@ -41,7 +41,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
-ADC_HandleTypeDef hadc2;
 
 DAC_HandleTypeDef hdac1;
 DAC_HandleTypeDef hdac2;
@@ -362,7 +361,23 @@ static void MX_ADC2_Init(void)
 
   /* USER CODE END ADC2_Init 0 */
 
-  ADC_ChannelConfTypeDef sConfig = {0};
+  LL_ADC_InitTypeDef ADC_InitStruct = {0};
+  LL_ADC_REG_InitTypeDef ADC_REG_InitStruct = {0};
+
+  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* Peripheral clock enable */
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_ADC12);
+
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
+  /**ADC2 GPIO Configuration
+  PA5   ------> ADC2_IN2
+  PA7   ------> ADC2_IN4
+  */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_5|LL_GPIO_PIN_7;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* USER CODE BEGIN ADC2_Init 1 */
 
@@ -370,37 +385,38 @@ static void MX_ADC2_Init(void)
 
   /** Common config
   */
-  hadc2.Instance = ADC2;
-  hadc2.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
-  hadc2.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc2.Init.ContinuousConvMode = DISABLE;
-  hadc2.Init.DiscontinuousConvMode = DISABLE;
-  hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc2.Init.NbrOfConversion = 1;
-  hadc2.Init.DMAContinuousRequests = DISABLE;
-  hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  hadc2.Init.LowPowerAutoWait = DISABLE;
-  hadc2.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
-  if (HAL_ADC_Init(&hadc2) != HAL_OK)
+  ADC_InitStruct.Resolution = LL_ADC_RESOLUTION_12B;
+  ADC_InitStruct.DataAlignment = LL_ADC_DATA_ALIGN_RIGHT;
+  ADC_InitStruct.LowPowerMode = LL_ADC_LP_MODE_NONE;
+  LL_ADC_Init(ADC2, &ADC_InitStruct);
+  ADC_REG_InitStruct.TriggerSource = LL_ADC_REG_TRIG_SOFTWARE;
+  ADC_REG_InitStruct.SequencerLength = LL_ADC_REG_SEQ_SCAN_DISABLE;
+  ADC_REG_InitStruct.SequencerDiscont = LL_ADC_REG_SEQ_DISCONT_DISABLE;
+  ADC_REG_InitStruct.ContinuousMode = LL_ADC_REG_CONV_SINGLE;
+  ADC_REG_InitStruct.DMATransfer = LL_ADC_REG_DMA_TRANSFER_LIMITED;
+  ADC_REG_InitStruct.Overrun = LL_ADC_REG_OVR_DATA_OVERWRITTEN;
+  LL_ADC_REG_Init(ADC2, &ADC_REG_InitStruct);
+
+  /* Enable ADC internal voltage regulator */
+  LL_ADC_EnableInternalRegulator(ADC2);
+  /* Delay for ADC internal voltage regulator stabilization. */
+  /* Compute number of CPU cycles to wait for, from delay in us. */
+  /* Note: Variable divided by 2 to compensate partially */
+  /* CPU processing cycles (depends on compilation optimization). */
+  /* Note: If system core clock frequency is below 200kHz, wait time */
+  /* is only a few CPU processing cycles. */
+  uint32_t wait_loop_index;
+  wait_loop_index = ((LL_ADC_DELAY_INTERNAL_REGUL_STAB_US * (SystemCoreClock / (100000 * 2))) / 10);
+  while(wait_loop_index != 0)
   {
-    Error_Handler();
+    wait_loop_index--;
   }
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_2;
-  sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SingleDiff = ADC_SINGLE_ENDED;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
-  sConfig.OffsetNumber = ADC_OFFSET_NONE;
-  sConfig.Offset = 0;
-  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
+  LL_ADC_REG_SetSequencerRanks(ADC2, LL_ADC_REG_RANK_1, LL_ADC_CHANNEL_2);
+  LL_ADC_SetChannelSamplingTime(ADC2, LL_ADC_CHANNEL_2, LL_ADC_SAMPLINGTIME_1CYCLE_5);
+  LL_ADC_SetChannelSingleDiff(ADC2, LL_ADC_CHANNEL_2, LL_ADC_SINGLE_ENDED);
   /* USER CODE BEGIN ADC2_Init 2 */
 
   /* USER CODE END ADC2_Init 2 */

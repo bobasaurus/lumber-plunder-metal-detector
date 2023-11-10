@@ -42,43 +42,63 @@ int maincpp(void)
     uint8_t count = 0;
     const int BUFFER_LEN = 30;
     char buffer[BUFFER_LEN];
-    uint32_t adcValue2;
 
     GPIO_TypeDef* switchPortList[8] = {SW0_GPIO_Port, SW1_GPIO_Port, SW2_GPIO_Port, SW3_GPIO_Port, SW4_GPIO_Port, SW5_GPIO_Port, SW7_GPIO_Port, SW8_GPIO_Port};
     uint16_t switchPinList[8] = {SW0_Pin, SW1_Pin, SW2_Pin, SW3_Pin, SW4_Pin, SW5_Pin, SW7_Pin, SW8_Pin};
 
-    while(1){
-    	HAL_ADC_Start(&hadc2);
-		if (HAL_ADC_PollForConversion(&hadc2, 100) == HAL_OK) {
-			adcValue2 = HAL_ADC_GetValue(&hadc2);
 
-			float voltageAtADCInput = ((float)adcValue2)/4095 * 3.3;
-			//vout = vin * R2/(R1+R2)    where R2 is closest to gnd
-			//vin = vout * (R1+R2)/R2
-			float batteryVoltage = (100.0f+30.1f)/30.1f*voltageAtADCInput;
+    LL_ADC_Enable(ADC2);
+    LL_ADC_REG_StartConversion(ADC2);
+    for (uint32_t i=0; i<LL_ADC_DELAY_CALIB_ENABLE_ADC_CYCLES; i++);//overkill, but will work
+    LL_ADC_REG_ReadConversionData12(ADC2);
+    HAL_Delay(10);
+    LL_ADC_Disable(ADC2);
+    LL_ADC_StartCalibration(ADC2, LL_ADC_SINGLE_ENDED);
+    //while (LL_ADC_IsCalibrationOnGoing(ADC2));
+    for (uint32_t i=0; i<LL_ADC_DELAY_CALIB_ENABLE_ADC_CYCLES; i++);//overkill, but will work
+    HAL_Delay(10);
+    LL_ADC_Enable(ADC2);
 
-			snprintf_(buffer, BUFFER_LEN, "BAT: %.2f [V]\r\n", batteryVoltage);//TODO: disable printf support, it gobbles up a lot of space (about 21% of flash on its own)
-			count++;
-			HAL_UART_Transmit(&huart2, (uint8_t *)buffer, strlen(buffer), 1000);
+    while(1)
+    {
+    	//HAL_ADC_Start(&hadc2);
+        LL_ADC_REG_StartConversion(ADC2);
 
-			u8g2_ClearBuffer(&u8g2);
-			u8g2_DrawStr(&u8g2, 0, 7, buffer);
+        //while (LL_ADC_IsActiveFlag_EOS(ADC2) == 0);
 
-			for (uint8_t i=0; i<8; i++)
-			{
-				GPIO_PinState pinState = HAL_GPIO_ReadPin(switchPortList[i], switchPinList[i]);
-				int switchNumber = i;
-				if (i >= 6) switchNumber = i+1;
-				snprintf_(buffer, BUFFER_LEN, "SW%d:%d", switchNumber, (int)pinState);
-				u8g2_DrawStr(&u8g2, 0, 14 + i*7, buffer);
-			}
-
-			u8g2_SendBuffer(&u8g2);
-		}
-
-
-
+        //if (HAL_ADC_PollForConversion(&hadc2, 100) == HAL_OK) {
         HAL_Delay(250);
+
+        uint16_t adcValue2 = LL_ADC_REG_ReadConversionData12(ADC2);
+        //uint32_t adcValue2 = HAL_ADC_GetValue(&hadc2);
+
+        float voltageAtADCInput = ((float)adcValue2)/4095 * 3.3;
+        //vout = vin * R2/(R1+R2)    where R2 is closest to gnd
+        //vin = vout * (R1+R2)/R2
+        float batteryVoltage = (100.0f+30.1f)/30.1f*voltageAtADCInput;
+
+        snprintf_(buffer, BUFFER_LEN, "BAT: %.2f [V]\r\n", batteryVoltage);//TODO: disable printf support, it gobbles up a lot of space (about 21% of flash on its own)
+        count++;
+        HAL_UART_Transmit(&huart2, (uint8_t *)buffer, strlen(buffer), 1000);
+
+        u8g2_ClearBuffer(&u8g2);
+        u8g2_DrawStr(&u8g2, 0, 7, buffer);
+
+        for (uint8_t i=0; i<8; i++)
+        {
+            GPIO_PinState pinState = HAL_GPIO_ReadPin(switchPortList[i], switchPinList[i]);
+            int switchNumber = i;
+            if (i >= 6) switchNumber = i+1;
+            snprintf_(buffer, BUFFER_LEN, "SW%d:%d", switchNumber, (int)pinState);
+            u8g2_DrawStr(&u8g2, 0, 14 + i*7, buffer);
+        }
+
+        u8g2_SendBuffer(&u8g2);
+		//}
+
+
+
+
     }
 
     return 0;
