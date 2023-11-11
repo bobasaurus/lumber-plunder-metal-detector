@@ -19,13 +19,13 @@ extern "C" UART_HandleTypeDef huart2;
 extern "C" uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 extern "C" uint8_t u8x8_byte_stm32_hw_spi(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
-/*uint32_t VoltageTo8BitDacValue(float voltage)
+uint32_t VoltageTo8BitDacValue(float voltage)
 {
     if ((voltage < 0.0f) || (voltage > 3.3f)) return 0;//todo: output error?
 
     uint32_t dacValue = (uint32_t) roundf(voltage * 255 / 3.3f);//todo: not the fastest with this function call... maybe come up with a better way eventually
     return dacValue;
-}*/
+}
 
 int maincpp(void)
 {
@@ -39,13 +39,15 @@ int maincpp(void)
     //u8g2_SetFont(&u8g2, u8g2_font_unifont_t_symbols);
     u8g2_SetFont(&u8g2, u8g2_font_5x8_mr);
 
-    uint8_t count = 0;
+    //u8g2_DrawXBM(&u8g2, 0, 0, 50, 50, (uint8_t *) bitmap);
+    u8g2_ClearBuffer(&u8g2);
+    u8g2_SendBuffer(&u8g2);
+
     const int BUFFER_LEN = 30;
     char buffer[BUFFER_LEN];
 
     GPIO_TypeDef* switchPortList[8] = {SW0_GPIO_Port, SW1_GPIO_Port, SW2_GPIO_Port, SW3_GPIO_Port, SW4_GPIO_Port, SW5_GPIO_Port, SW7_GPIO_Port, SW8_GPIO_Port};
     uint16_t switchPinList[8] = {SW0_Pin, SW1_Pin, SW2_Pin, SW3_Pin, SW4_Pin, SW5_Pin, SW7_Pin, SW8_Pin};
-
 
     LL_ADC_Enable(ADC2);
     LL_ADC_REG_StartConversion(ADC2);
@@ -61,23 +63,52 @@ int maincpp(void)
     LL_ADC_Enable(ADC2);
     HAL_Delay(1);
 
-    uint16_t adcValue2;
-    while(1)
+
+    //HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
+    //float dacDesiredVoltage1 = 1.55f;
+    //uint32_t dacValue1 = VoltageTo8BitDacValue(dacDesiredVoltage1);
+    //float dacActualVoltage1 = ((float)dacValue1)/255.0f * 3.3f;
+    //HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue1);
+
+    HAL_DAC_Start(&hdac2, DAC_CHANNEL_1);  //audio out is on PA6 = DAC2/1
+    //float dacDesiredVoltage2 = 2.59f;
+    //uint32_t dacValue2 = (uint32_t) roundf(dacDesiredVoltage2 * 255 / 3.3f);
+    //float dacActualVoltage2 = ((float)dacValue2)/255.0f * 3.3f;
+    //HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue2);//2.59V
+
+    float amplitude = 0.10f;
+    float frequency = 100.0f;
+    float sampleRate = 1000.0f;//[samp/sec]
+    float sampleTime = 1.0f/sampleRate;//[sec/sample]
+    int samplesPerCycle = (int)roundf(1.0f/frequency * sampleRate);
+
+    uint32_t wave[samplesPerCycle];
+    for (int i=0; i<samplesPerCycle; i++)
     {
-        LL_ADC_REG_StartConversion(ADC2);
+        float timeS = (i+1) * sampleTime;
+        float voltage = amplitude * sinf(2*3.14159265359f*frequency*timeS) + amplitude;
+        wave[i] = VoltageTo8BitDacValue(voltage);
+    }
+
+    int waveCount = 0;
+    int buttonDelay = 0;
+    uint32_t sampleTimeMS = (uint32_t)(sampleTime * 1000);
+    while (1)
+    {
+        /*LL_ADC_REG_StartConversion(ADC2);
         while (LL_ADC_IsActiveFlag_EOS(ADC2) == 0);
-        adcValue2 = LL_ADC_REG_ReadConversionData12(ADC2);
+        uint16_t adcValue2 = LL_ADC_REG_ReadConversionData12(ADC2);
 
         float voltageAtADCInput = ((float)adcValue2)/4095 * 3.3;
         //vout = vin * R2/(R1+R2)    where R2 is closest to gnd
         //vin = vout * (R1+R2)/R2
         float batteryVoltage = (100.0f+30.1f)/30.1f*voltageAtADCInput;
 
+        u8g2_ClearBuffer(&u8g2);
+
         snprintf_(buffer, BUFFER_LEN, "BAT: %.2f [V]\r\n", batteryVoltage);//TODO: disable printf support, it gobbles up a lot of space (about 21% of flash on its own)
-        count++;
         HAL_UART_Transmit(&huart2, (uint8_t *)buffer, strlen(buffer), 1000);
 
-        u8g2_ClearBuffer(&u8g2);
         u8g2_DrawStr(&u8g2, 0, 7, buffer);
 
         for (uint8_t i=0; i<8; i++)
@@ -89,12 +120,39 @@ int maincpp(void)
             u8g2_DrawStr(&u8g2, 0, 14 + i*7, buffer);
         }
 
-        u8g2_SendBuffer(&u8g2);
-		//}
+        u8g2_SendBuffer(&u8g2);*/
+
+        if (buttonDelay-- <= 0)
+        {
+            buttonDelay = 0;
+            float prevAmplitude = amplitude;
+            if (HAL_GPIO_ReadPin(SW0_GPIO_Port, SW0_Pin) == 0) amplitude += 0.05f;
+            if (HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin) == 0) amplitude -= 0.05f;
+            if (amplitude < 0) amplitude = 0;
+            if (amplitude > 2) amplitude = 2;//no idea what a good max is
+            if (prevAmplitude != amplitude) {
+                for (int i=0; i<samplesPerCycle; i++)
+                {
+                    float timeS = (i+1) * sampleTime;
+                    float voltage = amplitude * sinf(2*3.14159265359f*frequency*timeS) + amplitude;
+                    wave[i] = VoltageTo8BitDacValue(voltage);
+                }
+                //waveCount = 0;
+                buttonDelay = 150;
+
+                snprintf_(buffer, BUFFER_LEN, "amp: %.2f", amplitude);
+                u8g2_ClearBuffer(&u8g2);
+                u8g2_DrawStr(&u8g2, 0, 14, buffer);
+                u8g2_SendBuffer(&u8g2);
+            }
+        }
 
 
-
-        HAL_Delay(250);
+        uint32_t waveValue = wave[waveCount];
+        HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, waveValue);
+        HAL_Delay(sampleTimeMS);
+        waveCount++;
+        if (waveCount >= samplesPerCycle) waveCount = 0;
     }
 
     return 0;
