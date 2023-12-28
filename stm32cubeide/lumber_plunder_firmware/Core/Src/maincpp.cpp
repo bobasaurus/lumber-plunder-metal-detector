@@ -27,7 +27,37 @@ uint32_t VoltageTo8BitDacValue(float voltage)
     return dacValue;
 }
 
+const int BUFFER_LEN = 30;
+char buffer[BUFFER_LEN];
+
 int maincpp(void)
+{
+    LL_ADC_Enable(ADC1);
+    LL_ADC_REG_StartConversion(ADC1);
+    for (uint32_t i=0; i<LL_ADC_DELAY_CALIB_ENABLE_ADC_CYCLES; i++);//overkill, but will work
+    LL_ADC_REG_ReadConversionData12(ADC1);
+    HAL_Delay(1);//this delay seems to matter the most?
+    LL_ADC_Disable(ADC1);
+    HAL_Delay(1);
+    LL_ADC_StartCalibration(ADC1, LL_ADC_SINGLE_ENDED);
+    //while (LL_ADC_IsCalibrationOnGoing(ADC1));
+    for (uint32_t i=0; i<LL_ADC_DELAY_CALIB_ENABLE_ADC_CYCLES; i++);//overkill, but will work
+    HAL_Delay(1);
+    LL_ADC_Enable(ADC1);
+    HAL_Delay(1);
+
+    while(1)
+    {
+        LL_ADC_REG_StartConversion(ADC1);
+        while (LL_ADC_IsActiveFlag_EOS(ADC1) == 0);
+        uint16_t rxSample = LL_ADC_REG_ReadConversionData12(ADC1);
+
+        snprintf_(buffer, BUFFER_LEN, "%d\n", rxSample);
+        HAL_UART_Transmit(&huart2, (uint8_t *)buffer, strlen(buffer), 1000);
+    }
+}
+
+/*int maincppold(void)
 {
     u8g2_Setup_ssd1309_128x64_noname2_f(&u8g2, U8G2_R0, u8x8_byte_stm32_hw_spi,
             u8x8_stm32_gpio_and_delay);
@@ -43,8 +73,7 @@ int maincpp(void)
     u8g2_ClearBuffer(&u8g2);
     u8g2_SendBuffer(&u8g2);
 
-    const int BUFFER_LEN = 30;
-    char buffer[BUFFER_LEN];
+
 
     GPIO_TypeDef* switchPortList[8] = {SW0_GPIO_Port, SW1_GPIO_Port, SW2_GPIO_Port, SW3_GPIO_Port, SW4_GPIO_Port, SW5_GPIO_Port, SW7_GPIO_Port, SW8_GPIO_Port};
     uint16_t switchPinList[8] = {SW0_Pin, SW1_Pin, SW2_Pin, SW3_Pin, SW4_Pin, SW5_Pin, SW7_Pin, SW8_Pin};
@@ -76,7 +105,7 @@ int maincpp(void)
     //float dacActualVoltage2 = ((float)dacValue2)/255.0f * 3.3f;
     //HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue2);//2.59V
 
-    float amplitude = 0.10f;
+    float amplitude = 0.00f;
     float frequency = 100.0f;
     float sampleRate = 1000.0f;//[samp/sec]
     float sampleTime = 1.0f/sampleRate;//[sec/sample]
@@ -95,7 +124,7 @@ int maincpp(void)
     uint32_t sampleTimeMS = (uint32_t)(sampleTime * 1000);
     while (1)
     {
-        /*LL_ADC_REG_StartConversion(ADC2);
+        LL_ADC_REG_StartConversion(ADC2);
         while (LL_ADC_IsActiveFlag_EOS(ADC2) == 0);
         uint16_t adcValue2 = LL_ADC_REG_ReadConversionData12(ADC2);
 
@@ -120,7 +149,7 @@ int maincpp(void)
             u8g2_DrawStr(&u8g2, 0, 14 + i*7, buffer);
         }
 
-        u8g2_SendBuffer(&u8g2);*/
+        u8g2_SendBuffer(&u8g2);
 
         if (buttonDelay-- <= 0)
         {
@@ -149,11 +178,11 @@ int maincpp(void)
 
 
         uint32_t waveValue = wave[waveCount];
-        HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, waveValue);
+        HAL_DAC_SetValue(&hdac2, DAC_CHANNEL_1, DAC_ALIGN_8B_R, waveValue);//DAC_ALIGN_12B_R
         HAL_Delay(sampleTimeMS);
         waveCount++;
         if (waveCount >= samplesPerCycle) waveCount = 0;
     }
 
     return 0;
-}
+}*/
