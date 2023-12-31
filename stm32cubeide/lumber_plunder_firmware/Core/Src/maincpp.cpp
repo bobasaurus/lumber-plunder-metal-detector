@@ -6,18 +6,15 @@
  */
 
 #include "maincpp.h"
-#include "u8g2\u8g2.h"
-
-u8g2_t u8g2; // a structure which will contain all the data for one display
+//#include "u8g2\u8g2.h"
 
 extern "C" ADC_HandleTypeDef hadc1;
 extern "C" ADC_HandleTypeDef hadc2;
-extern "C" DAC_HandleTypeDef hdac1;
-extern "C" DAC_HandleTypeDef hdac2;
+extern "C" DAC_HandleTypeDef hdac1;//DAC1_OUT1 (buffered) = TX_AMP_RAW
+extern "C" DAC_HandleTypeDef hdac2;//DAC2_OUT1 (unbuffered) = AUDIO
 extern "C" UART_HandleTypeDef huart2;
 
-extern "C" uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
-extern "C" uint8_t u8x8_byte_stm32_hw_spi(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
+DMA_HandleTypeDef hDMA_To_DAC_TX_AMP_RAW;
 
 uint32_t VoltageTo8BitDacValue(float voltage)
 {
@@ -27,10 +24,64 @@ uint32_t VoltageTo8BitDacValue(float voltage)
     return dacValue;
 }
 
-const int BUFFER_LEN = 30;
-char buffer[BUFFER_LEN];
+void DMA_DAC_XferCpltCallback(DMA_HandleTypeDef *hDMA)
+{
+
+}
+
+void DMA_DAC_XferErrorCallback(DMA_HandleTypeDef *hDMA)
+{
+
+}
 
 int maincpp(void)
+{
+	//Enable and configure the peripheral to be connected to the DMA Channel
+	//refer to Reference manual for connection between peripherals and DMA requests
+
+	HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
+	//float dacDesiredVoltage1 = 0.0f;
+	//uint32_t dacValue1 = VoltageTo8BitDacValue(dacDesiredVoltage1);
+	//float dacActualVoltage1 = ((float)dacValue1)/255.0f * 3.3f;
+	//HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue1);
+
+	hDMA_To_DAC_TX_AMP_RAW.Init.Direction = DMA_MEMORY_TO_PERIPH;//transfer direction
+	hDMA_To_DAC_TX_AMP_RAW.Init.PeriphInc = DMA_PINC_DISABLE;
+	hDMA_To_DAC_TX_AMP_RAW.Init.MemInc = DMA_MINC_DISABLE;
+	hDMA_To_DAC_TX_AMP_RAW.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;//2-byte transfers for the 12-bit DAC
+	hDMA_To_DAC_TX_AMP_RAW.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+	hDMA_To_DAC_TX_AMP_RAW.Init.Mode = DMA_CIRCULAR;//or DMA_NORMAL ?? not sure which to use
+	hDMA_To_DAC_TX_AMP_RAW.Init.Priority = DMA_PRIORITY_HIGH;
+
+	hDMA_To_DAC_TX_AMP_RAW.XferCpltCallback = DMA_DAC_XferCpltCallback;
+	hDMA_To_DAC_TX_AMP_RAW.XferErrorCallback = DMA_DAC_XferErrorCallback;
+	hDMA_To_DAC_TX_AMP_RAW.DmaBaseAddress = ?;
+	hDMA_To_DAC_TX_AMP_RAW.ChannelIndex = 0;
+
+
+	//HAL_NVIC_SetPriority()
+	//HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+
+	__HAL_LINKDMA(&hdac1, DMA_Handle1, hDMA_To_DAC_TX_AMP_RAW);
+
+	/*HAL_StatusTypeDef dmaStatus =*/ HAL_DMA_Init(&hDMA_To_DAC_TX_AMP_RAW);
+
+	return 0;
+}
+
+
+
+void HAL_DAC_Process_DMA (DAC_HandleTypeDef *hDAC)
+{
+	//hDAC->DMA_Handle1->XferCpltCallback = HAL_DAC_TxCpltCallback ;
+	//hDAC->DMA_Handle1->XferErrorCallback = HAL_DAC_ErrorCallback ;
+}
+//const int BUFFER_LEN = 30;
+//char buffer[BUFFER_LEN];
+
+
+
+/*int maincpp_adc_accuracy_test(void)
 {
     LL_ADC_Enable(ADC1);
     LL_ADC_REG_StartConversion(ADC1);
@@ -55,7 +106,12 @@ int maincpp(void)
         snprintf_(buffer, BUFFER_LEN, "%d\n", rxSample);
         HAL_UART_Transmit(&huart2, (uint8_t *)buffer, strlen(buffer), 1000);
     }
-}
+}*/
+
+//u8g2_t u8g2; // a structure which will contain all the data for one display
+
+//extern "C" uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
+//extern "C" uint8_t u8x8_byte_stm32_hw_spi(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
 /*int maincppold(void)
 {

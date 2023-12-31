@@ -42,8 +42,8 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 
-DAC_HandleTypeDef hdac1;
-DAC_HandleTypeDef hdac2;
+DAC_HandleTypeDef hdac1;//DAC1_OUT1 (buffered) = TX_AMP_RAW
+DAC_HandleTypeDef hdac2;//DAC2_OUT1 (unbuffered) = AUDIO
 
 SPI_HandleTypeDef hspi1;
 
@@ -106,7 +106,10 @@ int main(void)
   MX_DAC1_Init();
   MX_DAC2_Init();
   /* USER CODE BEGIN 2 */
+
+  //The only non-generated code in this file... everything else is handled in maincpp.c
   maincpp();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
