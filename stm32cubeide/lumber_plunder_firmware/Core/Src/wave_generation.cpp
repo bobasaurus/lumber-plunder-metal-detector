@@ -9,10 +9,9 @@
 
 extern "C" DAC_HandleTypeDef hdac1;//DAC1_OUT1 (buffered) = TX_AMP_RAW
 extern "C" DAC_HandleTypeDef hdac2;//DAC2_OUT1 (unbuffered) = AUDIO
+extern "C" DMA_HandleTypeDef hdma_dac1_ch1;//DMA handle for DAC 1 Channel 1 (TX_AMP_RAW)
 
 #define M_PI_F   3.14159265358979323846264338327950288f
-
-DMA_HandleTypeDef hDMA_To_DAC_TX_AMP_RAW;
 
 bool WaveToTransmitAlreadyGenerated = false;
 uint32_t WaveToTransmitSize;
@@ -61,45 +60,20 @@ void DMA_DAC_XferErrorCallback(DMA_HandleTypeDef *hDMA)
 
 void SetupWaveGeneration()
 {
+	//TODO: work out DAC clock speed and how it relates to sample rate, match DAC sample rate to generated waveform sample rate
+	//might need a timer trigger to the DMA, ugh
 	GenerateWaveToTransmit();
 
 	HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
 
+	//HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, dacValue1);
 
-	//float dacDesiredVoltage1 = 0.0f;
-	//uint32_t dacValue1 = VoltageTo8BitDacValue(dacDesiredVoltage1);
-	//float dacActualVoltage1 = ((float)dacValue1)/255.0f * 3.3f;
-	//HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_8B_R, dacValue1);
-
-	/*hDMA_To_DAC_TX_AMP_RAW.Instance = DMA1_Channel3;
-	hDMA_To_DAC_TX_AMP_RAW.Init.Direction = DMA_MEMORY_TO_PERIPH;//transfer direction
-	hDMA_To_DAC_TX_AMP_RAW.Init.PeriphInc = DMA_PINC_DISABLE;
-	hDMA_To_DAC_TX_AMP_RAW.Init.MemInc = DMA_MINC_ENABLE;//memory pointer should be incremented (by the data size = 2) each transfer to iterate through all the values
-	hDMA_To_DAC_TX_AMP_RAW.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;//2-byte transfers for the 12-bit DAC
-	hDMA_To_DAC_TX_AMP_RAW.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-	hDMA_To_DAC_TX_AMP_RAW.Init.Mode = DMA_CIRCULAR;//or DMA_NORMAL ?? not sure which to use
-	hDMA_To_DAC_TX_AMP_RAW.Init.Priority = DMA_PRIORITY_HIGH;
-
-	hDMA_To_DAC_TX_AMP_RAW.XferCpltCallback = DMA_DAC_XferCpltCallback;
-	hDMA_To_DAC_TX_AMP_RAW.XferErrorCallback = DMA_DAC_XferErrorCallback;
-	//hDMA_To_DAC_TX_AMP_RAW.DmaBaseAddress = (DMA_TypeDef*) WaveToTransmit;//no idea if I did this right
-	hDMA_To_DAC_TX_AMP_RAW.ChannelIndex = 3;
-
-	//set up the system configuration controller to make the DMA channel mapping work (as per the reference manual)
-	//make DMA1 channel 3 work with DAC1_CH1 (instead of TIM6_UP)
-	//make DMA1 channel 5 work with DAC2_CH1
-	SYSCFG->CFGR1 |= SYSCFG_CFGR1_TIM6DAC1Ch1_DMA_RMP | SYSCFG_CFGR1_DAC2Ch1_DMA_RMP;
-
-	//HAL_NVIC_SetPriority()
-	//HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
-
-	__HAL_LINKDMA(&hdac1, DMA_Handle1, hDMA_To_DAC_TX_AMP_RAW);
-
-	HAL_DMA_Init(&hDMA_To_DAC_TX_AMP_RAW);*/
+	hdma_dac1_ch1.XferCpltCallback=&DMA_DAC_XferCpltCallback;
+	hdma_dac1_ch1.XferErrorCallback=&DMA_DAC_XferErrorCallback;
 
 	//HAL_StatusTypeDef HAL_DMA_Start (DMA_HandleTypeDef *hdma, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
 	HAL_DMA_Start_IT(
-			&hDMA_To_DAC_TX_AMP_RAW,
+			&hdma_dac1_ch1,
 			(uint32_t)WaveToTransmit,
 			(uint32_t)hdac1.Instance,
 			WaveToTransmitSize
