@@ -71,48 +71,48 @@ static void MX_TIM7_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-uint16_t waveAmplitude = 300;//DAC counts ranging from [0,4095]
-uint16_t waveFrequency = 200;//[Hz]
+#define WAVE_BUFFER_CAPACITY 512
 
+uint16_t waveAmplitude;//DAC counts ranging from [0,4095]
+uint16_t waveFrequency;//[Hz]
+uint16_t waveSize;//[points]
+uint16_t waveBuffer[WAVE_BUFFER_CAPACITY];
 
-uint32_t waveToTransmitSize;
-uint16_t *waveToTransmit;
-void GenerateWaveToTransmit()
+uint16_t tempAmplitude;
+uint16_t tempFrequency;
+uint16_t tempSize;
+uint16_t tempBuffer[WAVE_BUFFER_CAPACITY];//for double buffering
+
+void GenerateWaveToTransmitInTempBuffer(uint16_t amplitudeValue, uint16_t frequencyValue)
 {
-	if (waveToTransmitSize > 0) free(waveToTransmit);//note: this likely changes the pointer address and will screw up the DMA... look into better solution, maybe fixed array
-
-	float amplitude = (float)waveAmplitude;//[counts, 4095 max], and wave will be offset so every value is above zero
-	float frequency = (float)waveFrequency;//[Hz]
+	float amplitude = (float)amplitudeValue;//[counts, 4095 max], and wave will be offset so every value is above zero
+	float frequency = (float)frequencyValue;//[Hz]
 	float sampleRate = 64000000.0f/1.0f/6400.0f;//[samp/sec]
 	float sampleTime = 1.0f/sampleRate;//[sec/sample]
-	int samplesPerCycle = (int)roundf(1.0f/frequency * sampleRate);
+	uint16_t samplesPerCycle = (uint16_t)roundf(1.0f/frequency * sampleRate);
 
-	waveToTransmitSize = (uint32_t)samplesPerCycle;
-	waveToTransmit = (uint16_t *)malloc(sizeof(uint16_t) * samplesPerCycle);//maybe don't need to free since the program will be using this constantly and never really "exit"
+	tempAmplitude = amplitudeValue;
+	tempFrequency = frequencyValue;
+	tempSize = samplesPerCycle;
 
-	for (int i=0; i<samplesPerCycle; i++)
+	for (uint16_t i=0; i<samplesPerCycle; i++)
 	{
 		float timeS = (i+1) * sampleTime;
 		float waveValue = amplitude * sinf(2*M_PI*frequency*timeS) + amplitude;
 		if (waveValue < 0) waveValue = 0;//TODO: test and see if I can remove this
 		if (waveValue > 4095) waveValue = 4095;
-		waveToTransmit[i] = (uint16_t)waveValue;
+		tempBuffer[i] = (uint16_t)waveValue;
 	}
 }
 
-void SetWaveAmplitude(uint16_t amplitude)
+void UpdateDACWaveAfterChange()
 {
-	float ratio = ((float)amplitude) / waveAmplitude;
-	for (int i=0; i<waveToTransmitSize; i++)
-	{
-		waveToTransmit[i] *= ratio;
-	}
-	waveAmplitude = amplitude;
-}
-
-void SetWaveFrequency(uint16_t waveFrequency)
-{
-
+	HAL_DAC_Stop_DMA(&hdac2, DAC_CHANNEL_1);
+	memcpy(waveBuffer, tempBuffer, sizeof(uint16_t) * tempSize);
+	waveAmplitude = tempAmplitude;
+	waveFrequency = tempFrequency;
+	waveSize = tempSize;
+	HAL_DAC_Start_DMA(&hdac2, DAC_CHANNEL_1, (uint32_t *)waveBuffer, waveSize, DAC_ALIGN_12B_R);
 }
 
 /* USER CODE END 0 */
@@ -155,12 +155,8 @@ int main(void)
   //Enable the DAC channel using HAL_DAC_Start() or HAL_DAC_Start_DMA() functions
   //dac output voltage equation: DAC_OUTx = VREF+ * DOR / 4095
 
-  GenerateWaveToTransmit();
-
-  if (HAL_DAC_Start_DMA(&hdac2, DAC_CHANNEL_1, (uint32_t *)waveToTransmit, waveToTransmitSize, DAC_ALIGN_12B_R) != HAL_OK)//the user specify the length of data to be transferred at each end of conversion
-  {
-	  //handle errors here?
-  }
+  GenerateWaveToTransmitInTempBuffer(300, 200);
+  UpdateDACWaveAfterChange();
 
   //start the timer?
   //timer output rate = 8 MHz / prescaler / timermax, so default would be 8000000/1/65536 = 122.07 [update events per second, aka samples/sec]
@@ -177,20 +173,44 @@ int main(void)
   {
 	  GPIO_PinState pinState0 = HAL_GPIO_ReadPin(SW0_GPIO_Port, SW0_Pin);
 	  GPIO_PinState pinState1 = HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin);
+	  GPIO_PinState pinState8 = HAL_GPIO_ReadPin(SW8_GPIO_Port, SW8_Pin);
+	  GPIO_PinState pinState7 = HAL_GPIO_ReadPin(SW7_GPIO_Port, SW7_Pin);
 
 	  if (pinState0 == GPIO_PIN_RESET)
 	  {
 		  uint16_t newAmp = waveAmplitude + 50;
 		  if (newAmp > 3000) newAmp = 3000;
-		  SetWaveAmplitude(newAmp);
-		  HAL_Delay(100);
+		  GenerateWaveToTransmitInTempBuffer(newAmp, waveFrequency);
+		  UpdateDACWaveAfterChange();
+
+		  HAL_Delay(200);
 	  }
 	  if (pinState1 == GPIO_PIN_RESET)
 	  {
 		  int16_t newAmp = ((int16_t)waveAmplitude) - 50;
 		  if (newAmp < 0) newAmp = 0;
-		  SetWaveAmplitude((uint16_t)newAmp);
-		  HAL_Delay(100);
+		  GenerateWaveToTransmitInTempBuffer((uint16_t)newAmp, waveFrequency);
+		  UpdateDACWaveAfterChange();
+
+		  HAL_Delay(200);
+	  }
+	  if (pinState8 == GPIO_PIN_RESET)
+	  {
+		  uint16_t newFreq = waveFrequency + 20;
+		  if (newFreq > 3000) newFreq = 3000;
+		  GenerateWaveToTransmitInTempBuffer(waveAmplitude, newFreq);
+		  UpdateDACWaveAfterChange();
+
+		  HAL_Delay(200);
+	  }
+	  if (pinState7 == GPIO_PIN_RESET)
+	  {
+		  int16_t newFreq = ((int16_t)waveFrequency) - 20;
+		  if (newFreq < 20) newFreq = 20;
+		  GenerateWaveToTransmitInTempBuffer(waveAmplitude, (uint16_t)newFreq);
+		  UpdateDACWaveAfterChange();
+
+		  HAL_Delay(200);
 	  }
 
     /* USER CODE END WHILE */
