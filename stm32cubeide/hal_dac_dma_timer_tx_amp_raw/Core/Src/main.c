@@ -21,6 +21,8 @@
 //DMA config: DAC2_CH1, DMA1 channel 5, memory to peripheral, high priority
 //"DMA request mapped on this DMA channel only if the corresponding remapping bit is set in the SYSCFG_CFGR1 or SYSCFGR3 register" (ref manual page 273), I think this is done already with the "__HAL_DMA_REMAP_CHANNEL_ENABLE" command
 
+//DAC1_OUT1 / pin 10 / PA4 (A3): buffered => TX_AMP_RAW, timer 6 triggering
+
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -46,9 +48,12 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+DAC_HandleTypeDef hdac1;
 DAC_HandleTypeDef hdac2;
+DMA_HandleTypeDef hdma_dac1_ch1;
 DMA_HandleTypeDef hdma_dac2_ch1;
 
+TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 
 UART_HandleTypeDef huart2;
@@ -64,6 +69,8 @@ static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_DAC2_Init(void);
 static void MX_TIM7_Init(void);
+static void MX_DAC1_Init(void);
+static void MX_TIM6_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -108,11 +115,13 @@ void GenerateWaveToTransmitInTempBuffer(uint16_t amplitudeValue, uint16_t freque
 void UpdateDACWaveAfterChange()
 {
 	HAL_DAC_Stop_DMA(&hdac2, DAC_CHANNEL_1);
+	HAL_DAC_Stop_DMA(&hdac1, DAC_CHANNEL_1);
 	memcpy(waveBuffer, tempBuffer, sizeof(uint16_t) * tempSize);
 	waveAmplitude = tempAmplitude;
 	waveFrequency = tempFrequency;
 	waveSize = tempSize;
 	HAL_DAC_Start_DMA(&hdac2, DAC_CHANNEL_1, (uint32_t *)waveBuffer, waveSize, DAC_ALIGN_12B_R);
+	HAL_DAC_Start_DMA(&hdac1, DAC_CHANNEL_1, (uint32_t *)waveBuffer, waveSize, DAC_ALIGN_12B_R);
 }
 
 /* USER CODE END 0 */
@@ -149,6 +158,8 @@ int main(void)
   MX_USART2_UART_Init();
   MX_DAC2_Init();
   MX_TIM7_Init();
+  MX_DAC1_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
 
   //HAL_DMA_Start_IT(&hdma_dac2_ch1, )
@@ -162,6 +173,9 @@ int main(void)
   //timer output rate = 8 MHz / prescaler / timermax, so default would be 8000000/1/65536 = 122.07 [update events per second, aka samples/sec]
   __HAL_RCC_TIM7_CLK_ENABLE();
   HAL_TIM_Base_Start(&htim7);   //HAL_TIM_Base_Start_DMA();  ???
+
+  __HAL_RCC_TIM6_CLK_ENABLE();
+    HAL_TIM_Base_Start(&htim6);   //HAL_TIM_Base_Start_DMA();  ???
 
 
 
@@ -178,7 +192,7 @@ int main(void)
 
 	  if (pinState0 == GPIO_PIN_RESET)
 	  {
-		  uint16_t newAmp = waveAmplitude + 10;
+		  uint16_t newAmp = waveAmplitude + 50;
 		  if (newAmp > 3000) newAmp = 3000;
 		  GenerateWaveToTransmitInTempBuffer(newAmp, waveFrequency);
 		  UpdateDACWaveAfterChange();
@@ -187,7 +201,7 @@ int main(void)
 	  }
 	  if (pinState1 == GPIO_PIN_RESET)
 	  {
-		  int16_t newAmp = ((int16_t)waveAmplitude) - 10;
+		  int16_t newAmp = ((int16_t)waveAmplitude) - 50;
 		  if (newAmp < 0) newAmp = 0;
 		  GenerateWaveToTransmitInTempBuffer((uint16_t)newAmp, waveFrequency);
 		  UpdateDACWaveAfterChange();
@@ -259,6 +273,46 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief DAC1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_DAC1_Init(void)
+{
+
+  /* USER CODE BEGIN DAC1_Init 0 */
+
+  /* USER CODE END DAC1_Init 0 */
+
+  DAC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN DAC1_Init 1 */
+
+  /* USER CODE END DAC1_Init 1 */
+
+  /** DAC Initialization
+  */
+  hdac1.Instance = DAC1;
+  if (HAL_DAC_Init(&hdac1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** DAC channel OUT1 config
+  */
+  sConfig.DAC_Trigger = DAC_TRIGGER_T6_TRGO;
+  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
+  if (HAL_DAC_ConfigChannel(&hdac1, &sConfig, DAC_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN DAC1_Init 2 */
+
+  /* USER CODE END DAC1_Init 2 */
+
+}
+
+/**
   * @brief DAC2 Initialization Function
   * @param None
   * @retval None
@@ -295,6 +349,44 @@ static void MX_DAC2_Init(void)
   /* USER CODE BEGIN DAC2_Init 2 */
 
   /* USER CODE END DAC2_Init 2 */
+
+}
+
+/**
+  * @brief TIM6 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM6_Init(void)
+{
+
+  /* USER CODE BEGIN TIM6_Init 0 */
+
+  /* USER CODE END TIM6_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM6_Init 1 */
+
+  /* USER CODE END TIM6_Init 1 */
+  htim6.Instance = TIM6;
+  htim6.Init.Prescaler = 0;
+  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.Period = 6400;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim6, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM6_Init 2 */
+
+  /* USER CODE END TIM6_Init 2 */
 
 }
 
@@ -381,6 +473,9 @@ static void MX_DMA_Init(void)
   __HAL_RCC_DMA1_CLK_ENABLE();
 
   /* DMA interrupt init */
+  /* DMA1_Channel3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
   /* DMA1_Channel5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
