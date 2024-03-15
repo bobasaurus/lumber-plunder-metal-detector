@@ -96,6 +96,8 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     __HAL_RCC_TIM1_CLK_ENABLE();
   /* USER CODE BEGIN TIM1_MspInit 1 */
 
+    //TODO: do I need to implement HAL_TIM_OC_MspInit ???
+
   /* USER CODE END TIM1_MspInit 1 */
   }
 
@@ -118,14 +120,14 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
     GPIO_InitStruct.Pin = TIM1_CH1_TX_FILTER_CLK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     GPIO_InitStruct.Alternate = GPIO_AF6_TIM1;
     HAL_GPIO_Init(TIM1_CH1_TX_FILTER_CLK_GPIO_Port, &GPIO_InitStruct);
 
     GPIO_InitStruct.Pin = TIM1_CH4_RX_FILTER_CLK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     GPIO_InitStruct.Alternate = GPIO_AF11_TIM1;
     HAL_GPIO_Init(TIM1_CH4_RX_FILTER_CLK_GPIO_Port, &GPIO_InitStruct);
 
