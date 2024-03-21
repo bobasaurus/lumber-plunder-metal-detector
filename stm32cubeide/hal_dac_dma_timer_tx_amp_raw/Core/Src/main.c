@@ -53,6 +53,7 @@ DAC_HandleTypeDef hdac2;
 DMA_HandleTypeDef hdma_dac1_ch1;
 DMA_HandleTypeDef hdma_dac2_ch1;
 
+TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 
@@ -67,10 +68,11 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
-static void MX_DAC2_Init(void);
 static void MX_TIM7_Init(void);
 static void MX_DAC1_Init(void);
 static void MX_TIM6_Init(void);
+static void MX_TIM1_Init(void);
+static void MX_DAC2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -90,7 +92,12 @@ uint16_t tempFrequency;
 uint16_t tempSize;
 uint16_t tempBuffer[WAVE_BUFFER_CAPACITY];//for double buffering
 
-void GenerateWaveToTransmitInTempBuffer(uint16_t amplitudeValue, uint16_t frequencyValue)
+/**
+ * frequencyValue [Hz]
+ * amplitudeValue [12-bit DAC counts]
+ * centerValue [12-bit DAC counts]
+ */
+void GenerateWaveToTransmitInTempBuffer(uint16_t frequencyValue, uint16_t amplitudeValue, uint16_t centerValue)
 {
 	float amplitude = (float)amplitudeValue;//[counts, 4095 max], and wave will be offset so every value is above zero
 	float frequency = (float)frequencyValue;//[Hz]
@@ -105,7 +112,7 @@ void GenerateWaveToTransmitInTempBuffer(uint16_t amplitudeValue, uint16_t freque
 	for (uint16_t i=0; i<samplesPerCycle; i++)
 	{
 		float timeS = (i+1) * sampleTime;
-		float waveValue = amplitude * sinf(2*M_PI*frequency*timeS) + amplitude;
+		float waveValue = amplitude * sinf(2*M_PI*frequency*timeS) + centerValue;
 		if (waveValue < 0) waveValue = 0;//TODO: test and see if I can remove this
 		if (waveValue > 4095) waveValue = 4095;
 		tempBuffer[i] = (uint16_t)waveValue;
@@ -156,17 +163,24 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART2_UART_Init();
-  MX_DAC2_Init();
   MX_TIM7_Init();
   MX_DAC1_Init();
   MX_TIM6_Init();
+  MX_TIM1_Init();
+  MX_DAC2_Init();
   /* USER CODE BEGIN 2 */
 
   //HAL_DMA_Start_IT(&hdma_dac2_ch1, )
   //Enable the DAC channel using HAL_DAC_Start() or HAL_DAC_Start_DMA() functions
   //dac output voltage equation: DAC_OUTx = VREF+ * DOR / 4095
 
-  GenerateWaveToTransmitInTempBuffer(300, 200);
+  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 1);//same as htim1.Instance->CCR1 = 16;
+  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_4, 1);//same as htim1.Instance->CCR4 = 16;
+
+  HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_1);
+  HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_4);
+
+  GenerateWaveToTransmitInTempBuffer(200, 70, 4096/2);
   UpdateDACWaveAfterChange();
 
   //start the timer?
@@ -175,7 +189,7 @@ int main(void)
   HAL_TIM_Base_Start(&htim7);   //HAL_TIM_Base_Start_DMA();  ???
 
   __HAL_RCC_TIM6_CLK_ENABLE();
-    HAL_TIM_Base_Start(&htim6);   //HAL_TIM_Base_Start_DMA();  ???
+  HAL_TIM_Base_Start(&htim6);   //HAL_TIM_Base_Start_DMA();  ???
 
 
 
@@ -194,7 +208,7 @@ int main(void)
 	  {
 		  uint16_t newAmp = waveAmplitude + 50;
 		  if (newAmp > 3000) newAmp = 3000;
-		  GenerateWaveToTransmitInTempBuffer(newAmp, waveFrequency);
+		  GenerateWaveToTransmitInTempBuffer(waveFrequency, newAmp, 4096/2);
 		  UpdateDACWaveAfterChange();
 
 		  HAL_Delay(200);
@@ -203,7 +217,7 @@ int main(void)
 	  {
 		  int16_t newAmp = ((int16_t)waveAmplitude) - 50;
 		  if (newAmp < 0) newAmp = 0;
-		  GenerateWaveToTransmitInTempBuffer((uint16_t)newAmp, waveFrequency);
+		  GenerateWaveToTransmitInTempBuffer(waveFrequency, (uint16_t)newAmp, 4096/2);
 		  UpdateDACWaveAfterChange();
 
 		  HAL_Delay(200);
@@ -212,7 +226,7 @@ int main(void)
 	  {
 		  uint16_t newFreq = waveFrequency + 20;
 		  if (newFreq > 3000) newFreq = 3000;
-		  GenerateWaveToTransmitInTempBuffer(waveAmplitude, newFreq);
+		  GenerateWaveToTransmitInTempBuffer(newFreq, waveAmplitude, 4096/2);
 		  UpdateDACWaveAfterChange();
 
 		  HAL_Delay(200);
@@ -221,7 +235,7 @@ int main(void)
 	  {
 		  int16_t newFreq = ((int16_t)waveFrequency) - 20;
 		  if (newFreq < 20) newFreq = 20;
-		  GenerateWaveToTransmitInTempBuffer(waveAmplitude, (uint16_t)newFreq);
+		  GenerateWaveToTransmitInTempBuffer((uint16_t)newFreq, waveAmplitude, 4096/2);
 		  UpdateDACWaveAfterChange();
 
 		  HAL_Delay(200);
@@ -242,6 +256,7 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -267,6 +282,12 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_TIM1;
+  PeriphClkInit.Tim1ClockSelection = RCC_TIM1CLK_HCLK;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }
@@ -349,6 +370,90 @@ static void MX_DAC2_Init(void)
   /* USER CODE BEGIN DAC2_Init 2 */
 
   /* USER CODE END DAC2_Init 2 */
+
+}
+
+/**
+  * @brief TIM1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM1_Init(void)
+{
+
+  /* USER CODE BEGIN TIM1_Init 0 */
+
+  /* USER CODE END TIM1_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
+
+  /* USER CODE BEGIN TIM1_Init 1 */
+
+  /* USER CODE END TIM1_Init 1 */
+  htim1.Instance = TIM1;
+  htim1.Init.Prescaler = 0;
+  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim1.Init.Period = 32;
+  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim1.Init.RepetitionCounter = 0;
+  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim1, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_OC_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_TOGGLE;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  if (HAL_TIM_OC_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_OC_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
+  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
+  sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
+  sBreakDeadTimeConfig.DeadTime = 0;
+  sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
+  sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
+  sBreakDeadTimeConfig.BreakFilter = 0;
+  sBreakDeadTimeConfig.Break2State = TIM_BREAK2_DISABLE;
+  sBreakDeadTimeConfig.Break2Polarity = TIM_BREAK2POLARITY_HIGH;
+  sBreakDeadTimeConfig.Break2Filter = 0;
+  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
+  if (HAL_TIMEx_ConfigBreakDeadTime(&htim1, &sBreakDeadTimeConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM1_Init 2 */
+
+  /* USER CODE END TIM1_Init 2 */
+  HAL_TIM_MspPostInit(&htim1);
 
 }
 
