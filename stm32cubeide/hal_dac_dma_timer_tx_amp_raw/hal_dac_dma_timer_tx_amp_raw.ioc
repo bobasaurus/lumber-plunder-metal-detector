@@ -2,7 +2,7 @@
 CAD.formats=
 CAD.pinconfig=
 CAD.provider=
-DAC1.DAC_OutputBuffer=DAC_OUTPUTBUFFER_DISABLE
+DAC1.DAC_OutputBuffer=DAC_OUTPUTBUFFER_ENABLE
 DAC1.DAC_Trigger=DAC_TRIGGER_T6_TRGO
 DAC1.IPParameters=DAC_Trigger,DAC_OutputBuffer
 DAC2.DAC_Trigger=DAC_TRIGGER_T7_TRGO

@@ -170,7 +170,7 @@ int main(void)
   	GenerateWaveToTransmit(
   			dacOutputSampleRate, //sample rate
 			16000, //frequency
-			50, //amplitude
+			200, //amplitude
 			2048 //center
 			);
 
@@ -320,7 +320,7 @@ static void MX_DAC1_Init(void)
   /** DAC channel OUT1 config
   */
   sConfig.DAC_Trigger = DAC_TRIGGER_T6_TRGO;
-  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_DISABLE;
+  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
   if (HAL_DAC_ConfigChannel(&hdac1, &sConfig, DAC_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
