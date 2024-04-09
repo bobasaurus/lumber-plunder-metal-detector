@@ -64,6 +64,36 @@ static void MX_DAC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+#define WAVE_BUFFER_CAPACITY 4096
+
+uint16_t waveAmplitude;//DAC counts ranging from [0,4095]
+uint16_t waveFrequency;//[Hz]
+uint32_t waveSize;//[points]
+uint16_t waveBuffer[WAVE_BUFFER_CAPACITY];
+
+void GenerateWaveToTransmit(double sampleRate, double frequency, double amplitude, double center)
+{
+    double sampleTime = 1.0 / sampleRate;//[sec/sample]
+    uint32_t samplesPerCycle = (uint32_t)round(sampleRate / frequency);
+
+    if (samplesPerCycle >= WAVE_BUFFER_CAPACITY) return;
+
+    for (uint32_t i = 0; i < samplesPerCycle; i++)
+    {
+        double timeS = (i) * sampleTime;
+        double waveValue = amplitude * sin(2 * M_PI * frequency * timeS) + center;
+        if (waveValue < 0) waveValue = 0;//TODO: test and see if I can remove this
+        if (waveValue > 4095) waveValue = 4095;
+        uint16_t waveValueInt = (uint16_t)round(waveValue);
+        waveBuffer[i] = waveValueInt;
+    }
+
+    waveAmplitude = (uint16_t) amplitude;
+    waveFrequency = (uint16_t) frequency;
+    waveSize = samplesPerCycle;
+
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -99,21 +129,35 @@ int main(void)
   MX_DAC1_Init();
   /* USER CODE BEGIN 2 */
 
+  double sampleRate = 100000;//samples/sec
+  GenerateWaveToTransmit(sampleRate, 35, 90, 2047);
+
   //hdac1
   HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
 
 
-  float dacARef = 3.31f;
-  float dacValueVolts = 3.3f;
-  uint16_t dacValue = (uint16_t)roundf(dacValueVolts * 4095 / dacARef);
-  HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, (uint32_t) dacValue);
+
+  //float dacARef = 3.31f;
+  //float dacValueVolts = 0.1f;
+  //uint16_t dacValue = (uint16_t)roundf(dacValueVolts * 4095 / dacARef);
+  //HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, (uint32_t) dacValue);
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint16_t i = 0;
+  uint32_t timeOffset = 0;
+  uint16_t j = 0;
   while (1)
   {
+	  uint16_t value = waveBuffer[i];
+	  HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, (uint32_t) value);
+	  i++;
+	  if (i >= waveSize) i = 0;
+	  //HAL_Delay(1.0f/sampleRate * 1000 - timeOffset);
+	  for (j=0; j<2; j++) asm volatile("nop");
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
