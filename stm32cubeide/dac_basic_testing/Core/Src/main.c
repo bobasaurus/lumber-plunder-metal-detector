@@ -64,27 +64,27 @@ static void MX_DAC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-#define WAVE_BUFFER_CAPACITY 4096
+#define WAVE_BUFFER_CAPACITY 4096	//way bigger than needed
 
 uint16_t waveAmplitude;//DAC counts ranging from [0,4095]
 uint16_t waveFrequency;//[Hz]
 uint32_t waveSize;//[points]
 uint16_t waveBuffer[WAVE_BUFFER_CAPACITY];
 
-void GenerateWaveToTransmit(double sampleRate, double frequency, double amplitude, double center)
+int GenerateWaveToTransmit(double sampleRate, double frequency, double amplitude, double center)
 {
     double sampleTime = 1.0 / sampleRate;//[sec/sample]
     uint32_t samplesPerCycle = (uint32_t)round(sampleRate / frequency);
 
-    if (samplesPerCycle >= WAVE_BUFFER_CAPACITY) return;
+    if (samplesPerCycle >= WAVE_BUFFER_CAPACITY) return 2;
 
     for (uint32_t i = 0; i < samplesPerCycle; i++)
     {
         double timeS = (i) * sampleTime;
         double waveValue = amplitude * sin(2 * M_PI * frequency * timeS) + center;
-        if (waveValue < 0) waveValue = 0;//TODO: test and see if I can remove this
-        if (waveValue > 4095) waveValue = 4095;
         uint16_t waveValueInt = (uint16_t)round(waveValue);
+        if (waveValueInt < 0) return -1;//waveValue = 0;//TODO: test and see if I can remove this
+		if (waveValueInt > 4095) return 1;//waveValue = 4095;
         waveBuffer[i] = waveValueInt;
     }
 
@@ -92,6 +92,7 @@ void GenerateWaveToTransmit(double sampleRate, double frequency, double amplitud
     waveFrequency = (uint16_t) frequency;
     waveSize = samplesPerCycle;
 
+    return 0;
 }
 
 /* USER CODE END 0 */
@@ -129,8 +130,17 @@ int main(void)
   MX_DAC1_Init();
   /* USER CODE BEGIN 2 */
 
-  double sampleRate = 100000;//samples/sec
-  GenerateWaveToTransmit(sampleRate, 35, 90, 2047);
+  double sampleRate = 500000;//samples/sec
+  double frequency = 10000;
+  double amplitude = 2047.5;
+  double center = 2047.5;
+  int result = GenerateWaveToTransmit(sampleRate, frequency, amplitude, center);
+  if (result != 0) {
+	  while(1) {
+		  //todo: error code / light / etc
+		  asm volatile("nop");
+	  }
+  }
 
   //hdac1
   HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
@@ -147,16 +157,18 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uint16_t i = 0;
-  uint32_t timeOffset = 0;
-  uint16_t j = 0;
+  //uint32_t timeOffset = 0;
+  //uint16_t j = 0;
+  uint16_t value;
   while (1)
   {
-	  uint16_t value = waveBuffer[i];
-	  HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, (uint32_t) value);
-	  i++;
-	  if (i >= waveSize) i = 0;
+	  //value = waveBuffer[i++];
+	  //HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, (uint32_t) value);
+	  //if (i >= waveSize) i = 0;
+
 	  //HAL_Delay(1.0f/sampleRate * 1000 - timeOffset);
-	  for (j=0; j<2; j++) asm volatile("nop");
+	  /*for (j=0; j<2; j++)*/
+	  //asm volatile("nop");
 
     /* USER CODE END WHILE */
 

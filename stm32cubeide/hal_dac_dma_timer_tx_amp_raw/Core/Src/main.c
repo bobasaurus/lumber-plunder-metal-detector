@@ -95,20 +95,20 @@ const uint32_t dacOutputSampleRate = 64000000/4/10;
  * amplitude [12-bit DAC counts]
  * center [12-bit DAC counts]
  */
-void GenerateWaveToTransmit(double sampleRate, double frequency, double amplitude, double center)
+int GenerateWaveToTransmit(double sampleRate, double frequency, double amplitude, double center)
 {
     double sampleTime = 1.0 / sampleRate;//[sec/sample]
     uint32_t samplesPerCycle = (uint32_t)round(sampleRate / frequency);
 
-    if (samplesPerCycle >= WAVE_BUFFER_CAPACITY) return;
+    if (samplesPerCycle >= WAVE_BUFFER_CAPACITY) return 2;
 
     for (uint32_t i = 0; i < samplesPerCycle; i++)
     {
         double timeS = (i) * sampleTime;
         double waveValue = amplitude * sin(2 * M_PI * frequency * timeS) + center;
-        if (waveValue < 0) waveValue = 0;//TODO: test and see if I can remove this
-        if (waveValue > 4095) waveValue = 4095;
         uint16_t waveValueInt = (uint16_t)round(waveValue);
+        if (waveValueInt < 0) return -1;//waveValue = 0;//TODO: test and see if I can remove this
+		if (waveValueInt > 4095) return 1;//waveValue = 4095;
         waveBuffer[i] = waveValueInt;
     }
 
@@ -116,6 +116,7 @@ void GenerateWaveToTransmit(double sampleRate, double frequency, double amplitud
     waveFrequency = (uint16_t) frequency;
     waveSize = samplesPerCycle;
 
+    return 0;
 }
 
 /* USER CODE END 0 */
@@ -167,12 +168,17 @@ int main(void)
   HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_1);
   HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_4);
 
-  	GenerateWaveToTransmit(
-  			dacOutputSampleRate, //sample rate
-			16000, //frequency
-			200, //amplitude
-			2048 //center
-			);
+  //double sampleRate = 500000;//samples/sec
+  double frequency = 10000;
+  double amplitude = 2047.5;
+  double center = 2047.5;
+  int result = GenerateWaveToTransmit(dacOutputSampleRate, frequency, amplitude, center);
+  if (result != 0) {
+	  while(1) {
+		  //todo: error code / light / etc
+		  asm volatile("nop");
+	  }
+  }
 
 	HAL_DAC_Stop_DMA(&hdac2, DAC_CHANNEL_1);
 	HAL_DAC_Stop_DMA(&hdac1, DAC_CHANNEL_1);
